@@ -28,9 +28,13 @@ Terraform 0.11 or higher are supported.
 
 To develop in this repository, you'll want the following tools setup:
 
-* [Terraform](https://www.terraform.io/downloads.html)
+* [Terraform](https://www.terraform.io/downloads.html), >= 0.12 (note that 0.12 is used to develop this module, even though 0.11 is supported)
 * [terraform-docs](https://github.com/segmentio/terraform-docs)
 * [tflint](https://github.com/terraform-linters/tflint)
+* [Ruby](https://www.ruby-lang.org/en/documentation/installation/), [>= 2.4.2](https://rvm.io)
+* [Bundler](https://bundler.io)
+
+To run unit tests, you also need an AWS account to be able to provision resources.
 
 # License
 

@@ -20,6 +20,14 @@ Type: `string`
 
 Default: `"segment"`
 
+### name
+
+Description: The name of the role that will be created.
+
+Type: `string`
+
+Default: `"segment-data-lake-role"`
+
 ### segment\_aws\_account
 
 Description: ARN of the AWS account used by Segment.

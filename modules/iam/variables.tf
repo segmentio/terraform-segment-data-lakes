@@ -1,7 +1,18 @@
+variable "name" {
+  description = "The name of the role that will be created."
+  type        = "string"
+  default     = "segment-data-lake-role"
+}
+
 variable "segment_aws_account" {
-  description = "ARN of the AWS account used by Segment."
+  description = "ARN of the AWS account used by Segment to connect to your Data Lake."
   type        = "string"
   default     = "arn:aws:iam::798609480926:root"
+}
+
+variable "external_ids" {
+  description = "The name of the role that will be created."
+  type        = "list"
 }
 
 variable "s3_bucket" {
