@@ -4,7 +4,7 @@ The following input variables are required:
 
 ### external\_ids
 
-Description: The name of the role that will be created.
+Description: External IDs that will be used to assume the role. This should be a list of source IDs.
 
 Type: `list`
 

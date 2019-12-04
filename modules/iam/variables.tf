@@ -11,7 +11,7 @@ variable "segment_aws_account" {
 }
 
 variable "external_ids" {
-  description = "The name of the role that will be created."
+  description = "External IDs that will be used to assume the role. This should be a list of source IDs."
   type        = "list"
 }
 

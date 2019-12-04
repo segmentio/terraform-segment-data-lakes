@@ -95,6 +95,18 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 EOF
   }
 
+  configurations_json = <<EOF
+  [
+    {
+      "Classification": "hive-site",
+      "Properties": {
+        "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+      }
+    }
+  ]
+EOF
+
+
   tags = "${local.tags}"
 }
 
@@ -253,7 +265,8 @@ resource "aws_iam_role_policy" "iam_emr_profile_policy" {
             "s3:*",
             "sdb:*",
             "sns:*",
-            "sqs:*"
+            "sqs:*",
+            "glue:*"
         ]
     }]
 }
