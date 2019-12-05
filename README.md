@@ -92,7 +92,7 @@ above and apply again to incrementally change your infrastructure.
 exit status 1
 ```
 
-The EMR cluster requires a route table attached to the subnet with an internet gateway. You can follow [this guide](https://aws.amazon.com/blogs/big-data/launching-and-running-an-amazon-emr-cluster-inside-a-vpc/) to 
+The EMR cluster requires a route table attached to the subnet with an internet gateway. You can follow [this guide](https://aws.amazon.com/blogs/big-data/launching-and-running-an-amazon-emr-cluster-inside-a-vpc/) for guidance on creating and attaching a route table and internet gateway.
 
 ## The subnet configuration was invalid: The subnet subnet-{id} does not exist.
 
@@ -109,6 +109,8 @@ exit status 1
 ```
 
 The EMR cluster requires a subnet with a VPC. You can follow [this guide](https://aws.amazon.com/blogs/big-data/launching-and-running-an-amazon-emr-cluster-inside-a-vpc/) to create a subnet.
+
+If all else fails, teardown and start over.
 
 # Supported Terraform Versions
 
