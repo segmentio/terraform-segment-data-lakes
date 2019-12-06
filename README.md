@@ -45,7 +45,6 @@ module "glue" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.0"
 
   name        = "segment_data_lake"
-  description = "Glue DB for Segment Data Lake"
 }
 
 module "iam" {
