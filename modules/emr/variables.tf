@@ -26,6 +26,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "cluster_name" {
+  description = "Name of the EMR cluster that the module creates"
+  type        = "string"
+  default     = "segment-data-lake"
+}
+
 locals {
   tags = "${merge(map("vendor", "segment"), var.tags)}"
 }

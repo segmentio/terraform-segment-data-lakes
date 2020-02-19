@@ -42,3 +42,10 @@ Type: `map`
 
 Default: `<map>`
 
+### cluster\_name
+
+Description: Name of the EMR cluster that is created.
+
+Type: `string`
+
+Default: `"segment-data-lake"`
