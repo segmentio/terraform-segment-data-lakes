@@ -42,13 +42,13 @@ locals {
 }
 
 module "glue" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.1"
 
   name        = "segment_data_lake"
 }
 
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.1"
 
   name               = "segment-data-lake-iam-role"
   s3_bucket          = "${local.s3_bucket_name}"
@@ -57,7 +57,7 @@ module "iam" {
 }
 
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.1"
 
   s3_bucket = "${local.s3_bucket_name}"
   subnet_id = "${local.subnet_id}"
