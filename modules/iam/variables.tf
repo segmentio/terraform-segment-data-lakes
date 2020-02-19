@@ -4,10 +4,10 @@ variable "name" {
   default     = "segment-data-lake-role"
 }
 
-variable "segment_aws_account" {
-  description = "ARN of the AWS account used by Segment to connect to your Data Lake."
-  type        = "string"
-  default     = "arn:aws:iam::798609480926:root"
+variable "segment_aws_accounts" {
+  description = "ARN of the AWS accounts used by Segment to connect to your Data Lake."
+  type        = "list"
+  default     = ["arn:aws:iam::798609480926:root", "arn:aws:iam::294048959147:root"]
 }
 
 variable "external_ids" {

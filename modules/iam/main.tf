@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.segment_aws_account}"]
+      identifiers = "${var.segment_aws_accounts}"
     }
 
     effect = "Allow"
