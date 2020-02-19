@@ -1,7 +1,7 @@
 # Creates an EMR cluster that will be used to transform and load events into the Data Lake.
 # https://www.terraform.io/docs/providers/aws/r/emr_cluster.html
 resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
-  name          = "segment-data-lake"
+  name          = "${var.cluster_name}"
   release_label = "emr-5.27.0"
   applications  = ["Hadoop", "Hive", "Spark"]
 
@@ -123,7 +123,7 @@ EOF
 
 # IAM role for EMR Service
 resource "aws_iam_role" "iam_emr_service_role" {
-  name = "iam_emr_service_role"
+  name = "${var.cluster_name}-iam_emr_service_role"
 
   assume_role_policy = <<EOF
 {
@@ -143,7 +143,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "iam_emr_service_policy" {
-  name = "iam_emr_service_policy"
+  name = "${var.cluster_name}-iam_emr_service_policy"
   role = "${aws_iam_role.iam_emr_service_role.id}"
 
   policy = <<EOF
@@ -214,7 +214,7 @@ EOF
 
 # IAM Role for EC2 Instance Profile
 resource "aws_iam_role" "iam_emr_profile_role" {
-  name = "iam_emr_profile_role"
+  name = "${var.cluster_name}-iam_emr_profile_role"
 
   assume_role_policy = <<EOF
 {
@@ -234,12 +234,12 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "emr_profile" {
-  name  = "emr_profile"
+  name  = "${var.cluster_name}-emr_profile"
   roles = ["${aws_iam_role.iam_emr_profile_role.name}"]
 }
 
 resource "aws_iam_role_policy" "iam_emr_profile_policy" {
-  name = "iam_emr_profile_policy"
+  name = "${var.cluster_name}-iam_emr_profile_policy"
   role = "${aws_iam_role.iam_emr_profile_role.id}"
 
   policy = <<EOF
