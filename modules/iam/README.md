@@ -1,3 +1,9 @@
+## Providers
+
+The following providers are used by this module:
+
+- aws
+
 ## Required Inputs
 
 The following input variables are required:
@@ -34,13 +40,20 @@ Type: `string`
 
 Default: `"segment-data-lake-role"`
 
-### segment\_aws\_account
+### segment\_aws\_accounts
 
-Description: ARN of the AWS account used by Segment to connect to your Data Lake.
+Description: ARN of the AWS accounts used by Segment to connect to your Data Lake.
 
-Type: `string`
+Type: `list`
 
-Default: `"arn:aws:iam::798609480926:root"`
+Default:
+
+```json
+[
+  "arn:aws:iam::798609480926:root",
+  "arn:aws:iam::294048959147:root"
+]
+```
 
 ### tags
 
@@ -48,5 +61,9 @@ Description: A map of tags to add to all resources. A vendor=segment tag will be
 
 Type: `map`
 
-Default: `<map>`
+Default: `{}`
+
+## Outputs
+
+No output.
 

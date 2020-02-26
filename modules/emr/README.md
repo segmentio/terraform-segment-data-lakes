@@ -1,3 +1,9 @@
+## Providers
+
+The following providers are used by this module:
+
+- aws
+
 ## Required Inputs
 
 The following input variables are required:
@@ -17,6 +23,14 @@ Type: `string`
 ## Optional Inputs
 
 The following input variables are optional (have default values):
+
+### cluster\_name
+
+Description: Name of the EMR cluster that the module creates
+
+Type: `string`
+
+Default: `"segment-data-lake"`
 
 ### master\_security\_group
 
@@ -40,12 +54,9 @@ Description: A map of tags to add to all resources. A vendor=segment tag will be
 
 Type: `map`
 
-Default: `<map>`
+Default: `{}`
 
-### cluster\_name
+## Outputs
 
-Description: Name of the EMR cluster that is created.
+No output.
 
-Type: `string`
-
-Default: `"segment-data-lake"`
