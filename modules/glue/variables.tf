@@ -3,7 +3,6 @@ variable "name" {
   type        = "string"
 }
 
-
 variable "description" {
   description = "Description of the database."
   type        = "string"
