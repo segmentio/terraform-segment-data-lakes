@@ -78,6 +78,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
   statement {
     actions = [
       "glue:CreateTable",
+      "glue:CreateDatabase",
       "glue:GetTable",
       "glue:GetTables",
       "glue:UpdateTable",
@@ -100,8 +101,8 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
     resources = [
       "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:catalog",
       "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/default",
-      "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/${var.glue_database_name}",
-      "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${var.glue_database_name}/*",
+      "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/*",
+      "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/*",
     ]
 
     effect = "Allow"
