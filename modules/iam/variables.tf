@@ -20,12 +20,6 @@ variable "s3_bucket" {
   type        = "string"
 }
 
-variable "glue_database_name" {
-  description = "Name of the Glue database used by the Data Lake."
-  type        = "string"
-  default     = "segment"
-}
-
 variable "tags" {
   description = "A map of tags to add to all resources. A vendor=segment tag will be added automatically."
   type        = "map"
