@@ -207,6 +207,24 @@ To develop in this repository, you'll want the following tools set up:
 
 To run unit tests, you also need an AWS account to be able to provision resources.
 
+# Releasing
+
+Releases are made from the master branch. First, make sure you have the last code from master pulled locally:
+
+```
+* git remote update
+* git checkout master
+* git reset origin/master --hard
+```
+
+Then, use [`git release`](https://github.com/tj/git-extras/blob/master/Commands.md#git-release) to cut a new version that follows [semver](https://semver.org):
+
+```
+git release x.y.z
+```
+
+Lastly, craft a new [Github release](https://github.com/segmentio/terraform-aws-data-lake/releases).
+
 # License
 
 Released under the [MIT License](https://opensource.org/licenses/MIT).
