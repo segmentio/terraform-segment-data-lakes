@@ -56,7 +56,7 @@ module "glue" {
   name = "segment_data_lake"
 }
 
-# Creates the IAM policy that allows Segment to access the necessary resources
+# Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.4"
@@ -66,6 +66,8 @@ module "iam" {
   external_ids = "${values(local.segment_sources)}"
 }
 
+# Creates an EMR Cluster that Segment uses for performing the final ETL on your
+# data that lands in S3.
 module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.5"
 
