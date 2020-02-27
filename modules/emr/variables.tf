@@ -35,7 +35,7 @@ variable "cluster_name" {
 variable "emr_logs_s3_prefix" {
   description = "Prefix for writing EMR cluster logs to S3"
   type        = "string"
-  default     = "logs"
+  default     = "logs/"
 }
 
 locals {
