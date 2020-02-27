@@ -20,7 +20,6 @@ module "iam" {
 
   name               = "data-lake-tf-test-iam-role"
   s3_bucket          = "data_lake_tf_test_s3_bucket"
-  glue_database_name = "data_lake_tf_test"
   external_ids       = ["test_external_id_1", "test_external_id_2"]
   tags               = "${local.tags}"
 }
@@ -31,5 +30,5 @@ module "emr" {
   s3_bucket    = "data_lake_tf_test_s3_bucket"
   subnet_id    = "subnet-00f137e4f3a6f8356"
   tags         = "${local.tags}"
-  cluster_name = "test-cluster"
+  cluster_name = "test-cluster-2"
 }
