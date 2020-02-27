@@ -30,5 +30,5 @@ module "emr" {
   s3_bucket    = "data_lake_tf_test_s3_bucket"
   subnet_id    = "subnet-00f137e4f3a6f8356"
   tags         = "${local.tags}"
-  cluster_name = "test-cluster-2"
+  cluster_name = "test-cluster"
 }
