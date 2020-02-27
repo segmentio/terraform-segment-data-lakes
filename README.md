@@ -21,46 +21,53 @@ You'll need to provide a subnet within a VPC for the EMR to cluster to run in. H
 
 # Modules
 
-The repository is split into multiple modules, and each can be used independently: 
+The repository is split into multiple modules, and each can be used independently:
 * [iam](/modules/iam) - IAM roles that give Segment access to your AWS resources.
-* [glue](/modules/glue) - Glue tables that Segment can write metadata to.
 * [emr](/modules/emr) - EMR cluster that Segment can submit jobs to load events into your Data Lake.
+* [glue](/modules/glue) - Glue tables that Segment can write metadata to.
 
 # Usage
 
-```
+```hcl
 provider "aws" {
-  region = "us-west-2" # Replace this with the AWS region your infrastructure is set up in.
+  region = "us-west-2"  # Replace this with the AWS region your infrastructure is set up in.
 }
 
 locals {
-  tags = {
-    s3_bucket_name = "..."          # Replace this with the S3 bucket name to store your data.
-    external_ids   = ["...", "..."] # Replace this with a list of your Segment sources that will be enabled for Data Lakes.
-    subnet_id      = "..."          # Replace this with the subnet ID you want the EMR cluster to run in.
+  segment_sources = {
+    my_website = "<Segment Source ID>"  # Find this in the Segment UI: Settings > API Keys > Source ID
   }
 }
 
-# This is optional. Segment will create a DB for you if it does not exist already.
+# This is the target where Segment will write your data.
+# You can skip this if you already have an S3 bucket and just reference that name manually later.
+resource "aws_s3_bucket" "segment_datalake_s3" {
+  name = "my-first-segment-datalake"
+}
+
+# This is optional.
+# Segment will create a DB for you if it does not exist already.
 module "glue" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.1"
 
-  name        = "segment_data_lake"
+  name = "segment_data_lake"
 }
 
+# Creates the IAM policy that allows Segment to access the necessary resources
+# in your AWS account for loading your data.
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.4"
 
-  name               = "segment-data-lake-iam-role"
-  s3_bucket          = "${local.s3_bucket_name}"
-  external_ids       = "${local.external_ids}"
+  name         = "segment-data-lake-iam-role"
+  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
+  external_ids = "${values(local.segment_sources)}"
 }
 
 module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.1"
 
-  s3_bucket = "${local.s3_bucket_name}"
-  subnet_id = "${local.subnet_id}"
+  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
+  subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
 }
 ```
 
@@ -69,11 +76,10 @@ With the Terraform CLI, you can run `terraform plan` to preview the changes by t
 Note that creating the EMR cluster can take a while (typically 5 minutes).
 
 Once applied, make a note of the following (you'll need to provide this information to your Segment contact):
-* Segment source IDs and slugs that should be connect to the data lake
-* The AWS Region and AWS Account ID where your Data Lake was setup.
-* The ID of the generated EMR Cluster
-* The name of the generate Glue database
-* The ARN of the generated IAM role
+* The **AWS Region** and **AWS Account ID** where your Data Lake was configured
+* The **Source ID** for _each_ Segment source that will be connected to the data lake
+* The generated **EMR Cluster ID**
+* The generated **IAM Role ARN**
 
 # Common Errors
 
