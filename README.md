@@ -35,7 +35,10 @@ provider "aws" {
 
 locals {
   segment_sources = {
-    my_website = "<Segment Source ID>"  # Find this in the Segment UI: Settings > API Keys > Source ID
+    # Find these in the Segment UI: (for each source you intend to connect)
+    #  - Settings > SQL Settings > Schema Name (aka: Source Slug)
+    #  - Settings > API Keys > Source ID
+    <Segment Source Slug> = "<Segment Source ID>"
   }
 }
 
@@ -77,7 +80,7 @@ Note that creating the EMR cluster can take a while (typically 5 minutes).
 
 Once applied, make a note of the following (you'll need to provide this information to your Segment contact):
 * The **AWS Region** and **AWS Account ID** where your Data Lake was configured
-* The **Source ID** for _each_ Segment source that will be connected to the data lake
+* The **Source ID and Slug** for _each_ Segment source that will be connected to the data lake
 * The generated **EMR Cluster ID**
 * The generated **IAM Role ARN**
 
