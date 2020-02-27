@@ -5,7 +5,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   release_label = "emr-5.27.0"
   applications  = ["Hadoop", "Hive", "Spark"]
 
-  log_uri = "s3://${var.s3_bucket}/logs"
+  log_uri = "s3://${var.s3_bucket}/${var.emr_logs_s3_prefix}"
 
   ec2_attributes {
     subnet_id                         = "${var.subnet_id}"
