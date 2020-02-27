@@ -32,6 +32,12 @@ variable "cluster_name" {
   default     = "segment-data-lake"
 }
 
+variable "emr_logs_s3_prefix" {
+  description = "Prefix for writing EMR cluster logs to S3"
+  type        = "string"
+  default     = "logs"
+}
+
 locals {
   tags = "${merge(map("vendor", "segment"), var.tags)}"
 }
