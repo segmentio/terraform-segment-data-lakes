@@ -1,6 +1,28 @@
-# terraform-aws-data-lake
+# terraform-aws-data-lake (forked)
 
-_Note: Data Lakes is currently in Limited Availability._
+Forked version of the Segment repo that adds Slice CI/CD.
+
+Updating from the upstream Segment repo to pull in latest changes:
+```bash
+git remote add upstream git@github.com:segmentio/terraform-aws-data-lake.git
+git merge upstream/master
+```
+
+Add the sources in Segment: https://app.segment.com/mypizza-zach/destinations/catalog/data-lakes
+
+| Param        | Value           |
+| ------------ |:--------------|
+| Region: | us-east-1
+| Cluster ID: | j-1T2VIUV1YG249 (ID of the EMR cluster)
+| Glue Catalog | 651565136086
+| Database Name: | segment_data_lake
+| IAM Role: | arn:aws:iam::651565136086:role/segment-data-lake-iam-role
+| S3 Bucket: | 651565136086-slice-segment-data-lake
+
+Note:  **If the Terraform apply recreates the EMR cluster then all Segment destinations wil need to be updated with the new Cluster ID!** 
+
+
+# terraform-aws-data-lake
 
 Terraform modules which create AWS resources for a Segment Data Lake.
 
