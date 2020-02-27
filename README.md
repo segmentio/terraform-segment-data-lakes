@@ -41,6 +41,7 @@ locals {
   }
 }
 
+# This is optional. Segment will create a DB for you if it does not exist already.
 module "glue" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.1"
 
@@ -48,11 +49,10 @@ module "glue" {
 }
 
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.1"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.4"
 
   name               = "segment-data-lake-iam-role"
   s3_bucket          = "${local.s3_bucket_name}"
-  glue_database_name = "segment_data_lake"
   external_ids       = "${local.external_ids}"
 }
 
