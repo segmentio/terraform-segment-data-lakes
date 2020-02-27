@@ -48,7 +48,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # This is optional.
 # Segment will create a DB for you if it does not exist already.
 module "glue" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.1"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.5"
 
   name = "segment_data_lake"
 }
@@ -64,7 +64,7 @@ module "iam" {
 }
 
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.1"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.5"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
