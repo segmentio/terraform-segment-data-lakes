@@ -33,7 +33,7 @@ variable "cluster_name" {
 }
 
 variable "emr_logs_s3_prefix" {
-  description = "Prefix for writing EMR cluster logs to S3"
+  description = "Prefix for writing EMR cluster logs to S3. Make sure to include a trailing slash (/) when setting this."
   type        = "string"
   default     = "logs/"
 }
