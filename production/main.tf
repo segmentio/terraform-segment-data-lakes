@@ -17,12 +17,6 @@ module "s3_bucket" {
   s3_bucket = local.s3_bucket_name
 }
 
-module "glue" {
-  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.1.zip//terraform-aws-data-lake-0.1.1/modules/glue"
-
-  name        = "segment_data_lake"
-}
-
 module "iam" {
   source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.4.zip//terraform-aws-data-lake-0.1.4/modules/iam"
 
