@@ -18,13 +18,13 @@ module "s3_bucket" {
 }
 
 module "glue" {
-  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.1.zip//terraform-aws-data-lake-0.1.1/modules/glue"
+  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.5.zip//terraform-aws-data-lake-0.1.5/modules/glue"
 
   name        = "segment_data_lake"
 }
 
 module "iam" {
-  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.4.zip//terraform-aws-data-lake-0.1.4/modules/iam"
+  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.5.zip//terraform-aws-data-lake-0.1.5/modules/iam"
 
   name               = "segment-data-lake-iam-role"
   s3_bucket          = "${local.s3_bucket_name}"
@@ -32,7 +32,7 @@ module "iam" {
 }
 
 module "emr" {
-  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.1.zip//terraform-aws-data-lake-0.1.1/modules/emr"
+  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.1.5.zip//terraform-aws-data-lake-0.1.5/modules/emr"
 
   s3_bucket = "${local.s3_bucket_name}"
   subnet_id = "${local.subnet_id}"
