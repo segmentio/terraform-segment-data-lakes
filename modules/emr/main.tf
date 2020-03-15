@@ -19,7 +19,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 
   master_instance_group {
     instance_type = "m5.xlarge"
-    name = "master_group"
+    name          = "master_group"
 
     ebs_config {
       size                 = "64"
@@ -31,7 +31,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   core_instance_group {
     instance_type  = "m5.xlarge"
     instance_count = 2
-    name = "core_group"
+    name           = "core_group"
 
 
     ebs_config {
