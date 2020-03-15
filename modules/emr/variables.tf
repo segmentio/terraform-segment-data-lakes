@@ -38,6 +38,18 @@ variable "emr_logs_s3_prefix" {
   default     = "logs/"
 }
 
+variable "iam_emr_service_role" {
+  type = "string"
+}
+
+variable "iam_emr_autoscaling_role" {
+  type = "string"
+}
+
+variable "iam_emr_instance_profile" {
+  type = "string"
+}
+
 locals {
   tags = "${merge(map("vendor", "segment"), var.tags)}"
 }

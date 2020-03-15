@@ -7,6 +7,7 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
   tags               = "${local.tags}"
 }
 
+
 # Policy attached to the IAM role.
 # https://www.terraform.io/docs/providers/aws/d/iam_policy_document.html
 data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
@@ -57,6 +58,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
       "elasticmapreduce:CancelSteps",
       "elasticmapreduce:DescribeCluster",
       "elasticmapreduce:DescribeStep",
+      "elasticmapreduce:RunJobFlow"
     ]
 
     resources = [
@@ -134,9 +136,277 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
 
     effect = "Allow"
   }
+
+  # Gives the EMR service role permission to create cluster
+  statement {
+    actions = [
+      "iam:PassRole"
+    ]
+
+    resources = [
+      "${aws_iam_role.segment_emr_service_role.arn}",
+      "${aws_iam_role.segment_emr_instance_profile_role.arn}",
+      "${aws_iam_role.segment_emr_autoscaling_role.arn}"
+    ]
+
+    effect = "Allow"
+  }
+
 }
+
 
 resource "aws_iam_role_policy_attachment" "segment_data_lake_role_policy_attachment" {
   role       = "${aws_iam_role.segment_data_lake_iam_role.name}"
   policy_arn = "${aws_iam_policy.segment_data_lake_policy.arn}"
+}
+
+
+
+# IAM role for EMR Service
+resource "aws_iam_role" "segment_emr_service_role" {
+  name = "segment_emr_service_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "elasticmapreduce.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "segment_emr_service_policy" {
+  name = "segment_emr_service_policy"
+  role = "${aws_iam_role.segment_emr_service_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:CancelSpotInstanceRequests",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateSecurityGroup",
+                "ec2:CreateTags",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteSecurityGroup",
+                "ec2:DeleteTags",
+                "ec2:DescribeAvailabilityZones",
+                "ec2:DescribeAccountAttributes",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeImages",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstances",
+                "ec2:DescribeKeyPairs",
+                "ec2:DescribeNetworkAcls",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribePrefixLists",
+                "ec2:DescribeRouteTables",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSpotInstanceRequests",
+                "ec2:DescribeSpotPriceHistory",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeTags",
+                "ec2:DescribeVpcAttribute",
+                "ec2:DescribeVpcEndpoints",
+                "ec2:DescribeVpcEndpointServices",
+                "ec2:DescribeVpcs",
+                "ec2:DetachNetworkInterface",
+                "ec2:ModifyImageAttribute",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:RequestSpotInstances",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:RunInstances",
+                "ec2:TerminateInstances",
+                "ec2:DeleteVolume",
+                "ec2:DescribeVolumeStatus",
+                "ec2:DescribeVolumes",
+                "ec2:DetachVolume",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "iam:ListInstanceProfiles",
+                "iam:ListRolePolicies",
+                "iam:PassRole",
+                "s3:CreateBucket",
+                "s3:Get*",
+                "s3:List*",
+                "sdb:BatchPutAttributes",
+                "sdb:Select",
+                "sqs:CreateQueue",
+                "sqs:Delete*",
+                "sqs:GetQueue*",
+                "sqs:PurgeQueue",
+                "sqs:ReceiveMessage",
+                "cloudwatch:PutMetricAlarm",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:DeleteAlarms",
+                "application-autoscaling:RegisterScalableTarget",
+                "application-autoscaling:DeregisterScalableTarget",
+                "application-autoscaling:PutScalingPolicy",
+                "application-autoscaling:DeleteScalingPolicy",
+                "application-autoscaling:Describe*"
+            ]
+    }]
+}
+EOF
+}
+
+
+
+# IAM Role for EC2 Instance Profile
+resource "aws_iam_role" "segment_emr_instance_profile_role" {
+  name = "segment_emr_instance_profile_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
+  name  = "segment_emr_instance_profile"
+  roles = ["${aws_iam_role.segment_emr_instance_profile_role.name}"]
+}
+
+
+resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
+  name = "segment_emr_instance_profile_policy"
+  role = "${aws_iam_role.segment_emr_instance_profile_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+            "cloudwatch:*",
+            "ec2:Describe*",
+            "elasticmapreduce:Describe*",
+            "sdb:*"
+        ]
+    },
+    {
+            "Effect": "Allow",
+            "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:CreateBucket",
+                "s3:DeleteObject",
+                "s3:GetBucketVersioning",
+                "s3:GetObject",
+                "s3:GetObjectTagging",
+                "s3:GetObjectVersion",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:ListBucketVersions",
+                "s3:ListMultipartUploadParts",
+                "s3:PutBucketVersioning",
+                "s3:PutObject",
+                "s3:PutObjectTagging"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${var.s3_bucket}",
+                "arn:aws:s3:::${var.s3_bucket}/*"
+            ]
+        },
+    {
+            "Effect": "Allow",
+            "Resource": "*",
+            "Action": [
+                "glue:CreateDatabase",
+                "glue:UpdateDatabase",
+                "glue:DeleteDatabase",
+                "glue:GetDatabase",
+                "glue:GetDatabases",
+                "glue:CreateTable",
+                "glue:UpdateTable",
+                "glue:DeleteTable",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetTableVersions",
+                "glue:CreatePartition",
+                "glue:BatchCreatePartition",
+                "glue:UpdatePartition",
+                "glue:DeletePartition",
+                "glue:BatchDeletePartition",
+                "glue:GetPartition",
+                "glue:GetPartitions",
+                "glue:BatchGetPartition",
+                "glue:CreateUserDefinedFunction",
+                "glue:UpdateUserDefinedFunction",
+                "glue:DeleteUserDefinedFunction",
+                "glue:GetUserDefinedFunction",
+                "glue:GetUserDefinedFunctions"
+            ]
+        }
+]
+}
+EOF
+}
+
+
+# IAM Role for EMR Autoscaling role
+resource "aws_iam_role" "segment_emr_autoscaling_role" {
+  name = "segment_emr_autoscaling_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "application-autoscaling.amazonaws.com",
+          "elasticmapreduce.amazonaws.com",
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
+  name = "segmnet_emr_autoscaling_policy"
+  role = "${aws_iam_role.segment_emr_autoscaling_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+     "Statement": [{
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+            "cloudwatch:DescribeAlarms",
+            "elasticmapreduce:ListInstanceGroups",
+            "elasticmapreduce:ModifyInstanceGroups"
+        ]
+    }]
+}
+EOF
 }
