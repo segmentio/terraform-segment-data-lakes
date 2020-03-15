@@ -39,15 +39,18 @@ variable "emr_logs_s3_prefix" {
 }
 
 variable "iam_emr_service_role" {
-  type = "string"
+  description = "Name of the EMR service role"
+  type        = "string"
 }
 
 variable "iam_emr_autoscaling_role" {
-  type = "string"
+  description = "Name of the EMR autoscaling role"
+  type        = "string"
 }
 
 variable "iam_emr_instance_profile" {
-  type = "string"
+  description = "Name of the EMR EC2 instance profile"
+  type        = "string"
 }
 
 locals {
