@@ -31,4 +31,9 @@ module "emr" {
   subnet_id    = "subnet-00f137e4f3a6f8356"
   tags         = "${local.tags}"
   cluster_name = "test-cluster"
+
+  # LEAVE THIS AS-IS
+  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role = "${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
