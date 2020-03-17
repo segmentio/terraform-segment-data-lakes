@@ -34,6 +34,6 @@ module "emr" {
 
   # LEAVE THIS AS-IS
   iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role = "${module.iam.iam_emr_service_role}"
+  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
   iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
