@@ -59,7 +59,7 @@ module "glue" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.1.4"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
 
   name         = "segment-data-lake-iam-role"
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
