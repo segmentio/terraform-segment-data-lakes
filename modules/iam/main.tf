@@ -58,7 +58,8 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
       "elasticmapreduce:CancelSteps",
       "elasticmapreduce:DescribeCluster",
       "elasticmapreduce:DescribeStep",
-      "elasticmapreduce:RunJobFlow"
+      "elasticmapreduce:RunJobFlow",
+      "elasticmapreduce:TerminateJobFlows"
     ]
 
     resources = [
