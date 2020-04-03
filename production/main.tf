@@ -8,7 +8,9 @@ locals {
     "N6hYZDFTlp", # Storefront Prod
     "H5V4KbCRon", # Core API
     "0ThsmykUHG", # Slicelink
-    "gm9RbcYqRh"  # Braze
+    "gm9RbcYqRh", # Braze
+    "oIQ4q7dcTK", # partner-websites-prod
+    "bH2qnkb0vZ"  # slice-os-prod
   ]
   subnet_id      = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
 }
