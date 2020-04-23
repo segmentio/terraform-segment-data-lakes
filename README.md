@@ -69,10 +69,15 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.5"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.2.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
+ 
+  # LEAVE THIS AS-IS
+  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 ```
 
