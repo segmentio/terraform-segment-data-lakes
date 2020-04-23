@@ -48,14 +48,6 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
   name = "my-first-segment-datalake"
 }
 
-# This is optional.
-# Segment will create a DB for you if it does not exist already.
-module "glue" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.5"
-
-  name = "segment_data_lake"
-}
-
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
