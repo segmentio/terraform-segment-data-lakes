@@ -28,15 +28,15 @@ The repository is split into multiple modules, and each can be used independentl
 
 # Usage
 
-### Terraform Installation
+## Terraform Installation
 *Note*  - Skip this section if you already have a working Terraform setup
-#### OSX:
+### OSX:
 `brew` on OSX should install the latest version of Terraform.
 ```
 brew install terraform
 ```
 
-#### Centos/Ubuntu:
+### Centos/Ubuntu:
 * Follow instructions [here](https://phoenixnap.com/kb/how-to-install-terraform-centos-ubuntu) to install on Centos/Ubuntu OS.
 * Ensure that the version installed in > 0.11.x
 
@@ -45,7 +45,7 @@ Verify installation works by running:
 terraform help
 ```
 
-### Set up Project
+## Set up Project
 * Create project directory
 ```
 mkdir segment-datalakes-tf
@@ -99,7 +99,7 @@ module "emr" {
   iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 ```
-### Provision Resources
+## Provision Resources
 * Provide AWS credentials of the account being used. More details here: https://www.terraform.io/docs/providers/aws/index.html
   ```
   export AWS_ACCESS_KEY_ID="anaccesskey"
