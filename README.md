@@ -180,6 +180,8 @@ If all else fails, teardown and start over.
 
 Terraform 0.11 or higher is supported.
 
+NOTE: Release v0.2.0 onwards only Terraform 0.12 or higher is supported.
+
 # Development
 
 To develop in this repository, you'll want the following tools set up:
