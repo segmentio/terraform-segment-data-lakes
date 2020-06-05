@@ -48,6 +48,30 @@ Type: `string`
 
 Default: `""`
 
+### master_instance_type
+
+Description: EC2 Instance Type for Master
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
+### core_instance_type
+
+Description: EC2 Instance Type for Core Nodes
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
+# task_instance_type
+
+Description: EC2 Instance Type for Task Nodes
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
 ### tags
 
 Description: A map of tags to add to all resources. A vendor=segment tag will be added automatically (which is also used by the IAM policy to provide Segment access to submit jobs).

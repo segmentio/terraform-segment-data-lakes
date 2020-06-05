@@ -18,7 +18,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   autoscaling_role = "${var.iam_emr_autoscaling_role}"
 
   master_instance_group {
-    instance_type = "m5.xlarge"
+    instance_type = "${var.master_instance_type}"
     name          = "master_group"
 
     ebs_config {
@@ -29,7 +29,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   }
 
   core_instance_group {
-    instance_type  = "m5.xlarge"
+    instance_type  = "${var.core_instance_type}"
     instance_count = 2
     name           = "core_group"
 
@@ -120,7 +120,7 @@ resource "aws_emr_instance_group" "task" {
   name       = "task_group"
   cluster_id = join("", aws_emr_cluster.segment_data_lake_emr_cluster.*.id)
 
-  instance_type  = "m5.xlarge"
+  instance_type  = "${var.task_instance_type}"
   instance_count = "2"
 
   ebs_config {
