@@ -48,7 +48,7 @@ Type: `string`
 
 Default: `""`
 
-### master_instance_type
+### master\_instance\_type
 
 Description: EC2 Instance Type for Master
 
@@ -56,7 +56,7 @@ Type: `string`
 
 Default: `"m5.xlarge"`
 
-### core_instance_type
+### core\_instance\_type
 
 Description: EC2 Instance Type for Core Nodes
 
@@ -64,13 +64,45 @@ Type: `string`
 
 Default: `"m5.xlarge"`
 
-# task_instance_type
+# task\_instance\_type
 
 Description: EC2 Instance Type for Task Nodes
 
 Type: `string`
 
 Default: `"m5.xlarge"`
+
+# core\_instance\_count
+
+Description: Number of instances of Core Nodes
+
+Type: `string`
+
+Default: `"2"`
+
+# core\_instance\_max\_count
+
+Description: Max number of Core Nodes used on autoscale
+
+Type: `string`
+
+Default: `"4"`
+
+# task\_instance\_count
+
+Description: Number of instances of Task Nodes
+
+Type: `string`
+
+Default: `"2"`
+
+# task\_instance\_max\_count
+
+Description: Max number of Task Nodes used on autoscale
+
+Type: `string`
+
+Default: `"4"`
 
 ### tags
 

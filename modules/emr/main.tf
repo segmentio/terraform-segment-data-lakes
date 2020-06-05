@@ -30,7 +30,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 
   core_instance_group {
     instance_type  = "${var.core_instance_type}"
-    instance_count = 2
+    instance_count = "${var.core_instance_count}"
     name           = "core_group"
 
 
@@ -43,8 +43,8 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     autoscaling_policy = <<EOF
 {
 	"Constraints": {
-		"MinCapacity": 2,
-		"MaxCapacity": 4
+		"MinCapacity": tonumber(${var.core_instance_count}),
+		"MaxCapacity": tonumber(${var.core_instance_max_count})
 	},
 	"Rules": [{
 		"Action": {
@@ -121,7 +121,7 @@ resource "aws_emr_instance_group" "task" {
   cluster_id = join("", aws_emr_cluster.segment_data_lake_emr_cluster.*.id)
 
   instance_type  = "${var.task_instance_type}"
-  instance_count = "2"
+  instance_count = "${var.task_instance_count}"
 
   ebs_config {
     size                 = "64"
@@ -132,8 +132,8 @@ resource "aws_emr_instance_group" "task" {
   autoscaling_policy = <<EOF
 {
 "Constraints": {
-			"MinCapacity": 2,
-			"MaxCapacity": 4
+			"MinCapacity": tonumber(${var.task_instance_count}),
+			"MaxCapacity": tonumber(${var.task_instance_max_count})
 		},
 		"Rules": [{
 			"Action": {
