@@ -43,8 +43,8 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     autoscaling_policy = <<EOF
 {
 	"Constraints": {
-		"MinCapacity": tonumber(${var.core_instance_count}),
-		"MaxCapacity": tonumber(${var.core_instance_max_count})
+		"MinCapacity": ${var.core_instance_count},
+		"MaxCapacity": ${var.core_instance_max_count}
 	},
 	"Rules": [{
 		"Action": {
@@ -132,8 +132,8 @@ resource "aws_emr_instance_group" "task" {
   autoscaling_policy = <<EOF
 {
 "Constraints": {
-			"MinCapacity": tonumber(${var.task_instance_count}),
-			"MaxCapacity": tonumber(${var.task_instance_max_count})
+			"MinCapacity": ${var.task_instance_count},
+			"MaxCapacity": ${var.task_instance_max_count}
 		},
 		"Rules": [{
 			"Action": {
