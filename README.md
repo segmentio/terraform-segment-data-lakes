@@ -10,7 +10,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 * Authorized [AWS account](https://aws.amazon.com/account/).
 * Ability to run Terraform with your AWS Account. You must use Terraform 0.11 or higher.
 * A subnet within a VPC for the EMR cluster to run in.
-* [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) to send data from Segment to and to store logs.
+* An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
 ## VPC
 
@@ -55,7 +55,7 @@ mkdir segment-datalakes-tf
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
     * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
 
-```
+```hcl
 provider "aws" {
   region = "us-west-2"  # Replace this with the AWS region your infrastructure is set up in.
 }
