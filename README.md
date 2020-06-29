@@ -80,9 +80,9 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
 
-  name         = "segment-data-lake-iam-role"
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
-  external_ids = "${values(local.segment_sources)}"
+  iam_suffix         = "prod"
+  s3_bucket          = "${aws_s3_bucket.segment_datalake_s3.name}"
+  external_ids       = "${values(local.segment_sources)}"
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your

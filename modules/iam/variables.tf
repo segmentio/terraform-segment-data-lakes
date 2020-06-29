@@ -1,7 +1,6 @@
-variable "name" {
-  description = "The name of the role that will be created."
+variable "iam_suffix" {
+  description = "The suffix of the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod"
   type        = "string"
-  default     = "segment-data-lake-role"
 }
 
 variable "segment_aws_accounts" {
