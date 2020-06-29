@@ -1,7 +1,7 @@
 # Creates the IAM role used by Segment.
 # https://www.terraform.io/docs/providers/aws/r/iam_role.html
 resource "aws_iam_role" "segment_data_lake_iam_role" {
-  name               = "${var.name}"
+  name               = "SegmentDataLakeRole-${var.iam_suffix}"
   description        = "IAM Role used by Segment"
   assume_role_policy = "${data.aws_iam_policy_document.segment_data_lake_assume_role_policy_document.json}"
   tags               = "${local.tags}"
@@ -41,7 +41,7 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 resource "aws_iam_policy" "segment_data_lake_policy" {
-  name        = "SegmentDataLakePolicy"
+  name        = "SegmentDataLakePolicy-${var.iam_suffix}"
   path        = "/"
   description = "Gives access to resources in your Data Lake"
 
@@ -165,7 +165,7 @@ resource "aws_iam_role_policy_attachment" "segment_data_lake_role_policy_attachm
 
 # IAM role for EMR Service
 resource "aws_iam_role" "segment_emr_service_role" {
-  name = "segment_emr_service_role"
+  name = "SegmentEMRServiceRole-${var.iam_suffix}"
 
   assume_role_policy = <<EOF
 {
@@ -185,7 +185,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "segment_emr_service_policy" {
-  name = "segment_emr_service_policy"
+  name = "SegmentEMRServicePolicy-${var.iam_suffix}"
   role = "${aws_iam_role.segment_emr_service_role.id}"
 
   policy = <<EOF
@@ -268,7 +268,7 @@ EOF
 
 # IAM Role for EC2 Instance Profile
 resource "aws_iam_role" "segment_emr_instance_profile_role" {
-  name = "segment_emr_instance_profile_role"
+  name = "SegmentEMRInstanceProfileRole-${var.iam_suffix}"
 
   assume_role_policy = <<EOF
 {
@@ -288,13 +288,13 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
-  name  = "segment_emr_instance_profile"
+  name  = "SegmentEMRInstanceProfile-${var.iam_suffix}"
   roles = ["${aws_iam_role.segment_emr_instance_profile_role.name}"]
 }
 
 
 resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
-  name = "segment_emr_instance_profile_policy"
+  name = "SegmentEMRInstanceProfilePolicy-${var.iam_suffix}"
   role = "${aws_iam_role.segment_emr_instance_profile_role.id}"
 
   policy = <<EOF
@@ -371,7 +371,7 @@ EOF
 
 # IAM Role for EMR Autoscaling role
 resource "aws_iam_role" "segment_emr_autoscaling_role" {
-  name = "segment_emr_autoscaling_role"
+  name = "SegmentEMRAutoscalingRole-${var.iam_suffix}"
 
   assume_role_policy = <<EOF
 {
@@ -392,8 +392,8 @@ resource "aws_iam_role" "segment_emr_autoscaling_role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "segment_emr_autoscaling_policy" {
-  name = "segment_emr_autoscaling_policy"
+resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
+  name = "SegmentEMRAutoscalingPolicy-${var.iam_suffix}"
   role = "${aws_iam_role.segment_emr_autoscaling_role.id}"
 
   policy = <<EOF
