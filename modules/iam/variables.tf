@@ -1,6 +1,7 @@
-variable "iam_suffix" {
-  description = "The suffix of the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod"
+variable "suffix" {
+  description = "Optional suffix to the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod"
   type        = "string"
+  default     = ""
 }
 
 variable "segment_aws_accounts" {
