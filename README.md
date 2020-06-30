@@ -93,7 +93,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
 
-  iam_suffix         = "prod"
+  suffix             = "prod"
   s3_bucket          = "${aws_s3_bucket.segment_datalake_s3.name}"
   external_ids       = "${values(local.segment_sources)}"
 }
