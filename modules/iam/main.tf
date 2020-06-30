@@ -392,8 +392,8 @@ resource "aws_iam_role" "segment_emr_autoscaling_role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
-  name = "segmnet_emr_autoscaling_policy"
+resource "aws_iam_role_policy" "segment_emr_autoscaling_policy" {
+  name = "segment_emr_autoscaling_policy"
   role = "${aws_iam_role.segment_emr_autoscaling_role.id}"
 
   policy = <<EOF
