@@ -10,7 +10,11 @@ locals {
     "0ThsmykUHG", # Slicelink
     "gm9RbcYqRh", # Braze
     "oIQ4q7dcTK", # partner-websites-prod
-    "bH2qnkb0vZ"  # slice-os-prod
+    "bH2qnkb0vZ", # slice-os-prod
+    "tUbtH4DbIJ", # direct-web
+    "G5yFS1KhpW", # admin
+    "XPiW5h2e4n"  # consumer-landing-pages-production
+
   ]
   subnet_id      = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
 }
