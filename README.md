@@ -32,7 +32,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 * Authorized [AWS account](https://aws.amazon.com/account/).
 * Ability to run Terraform with your AWS Account. You must use Terraform 0.11 or higher.
 * A subnet within a VPC for the EMR cluster to run in.
-* [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) to send data from Segment to and to store logs.
+* An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
 ## VPC
 
@@ -49,6 +49,33 @@ The repository is split into multiple modules, and each can be used independentl
 * [glue](/modules/glue) - Glue tables that Segment can write metadata to.
 
 # Usage
+
+## Terraform Installation
+*Note*  - Skip this section if you already have a working Terraform setup
+### OSX:
+`brew` on OSX should install the latest version of Terraform.
+```
+brew install terraform
+```
+
+### Centos/Ubuntu:
+* Follow instructions [here](https://phoenixnap.com/kb/how-to-install-terraform-centos-ubuntu) to install on Centos/Ubuntu OS.
+* Ensure that the version installed in > 0.11.x
+
+Verify installation works by running:
+```
+terraform help
+```
+
+## Set up Project
+* Create project directory
+```
+mkdir segment-datalakes-tf
+```
+* Create `main.tf` file
+    * Update the `segment_sources` variable in the `locals` to the sources you want to sync 
+    * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
+    * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
 
 ```hcl
 provider "aws" {
@@ -70,14 +97,6 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
   name = "my-first-segment-datalake"
 }
 
-# This is optional.
-# Segment will create a DB for you if it does not exist already.
-module "glue" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/glue?ref=v0.1.5"
-
-  name = "segment_data_lake"
-}
-
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
@@ -91,18 +110,53 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.1.5"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.2.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
+ 
+  # LEAVE THIS AS-IS
+  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 ```
-
-With the Terraform CLI, you can run `terraform plan` to preview the changes by the modules, and `terraform apply` to generate the resources.
+## Provision Resources
+* Provide AWS credentials of the account being used. More details here: https://www.terraform.io/docs/providers/aws/index.html
+  ```
+  export AWS_ACCESS_KEY_ID="anaccesskey"
+  export AWS_SECRET_ACCESS_KEY="asecretkey"
+  export AWS_DEFAULT_REGION="us-west-2"
+  ```
+* Initialize the references modules
+  ```
+  terraform init
+  ```
+  You should see a success message once you run the plan:
+  ```
+  Terraform has been successfully initialized!
+  ```
+* Run plan
+  This does not create any resources. It just outputs what will be created after you run apply(next step).
+  ```
+  terraform plan
+  ```
+  You should see something like towards the end of the plan:
+  ```
+  Plan: 13 to add, 0 to change, 0 to destroy.
+  ```
+* Run apply - this step creates the resources in your AWS infrastructure
+  ```
+  terraform apply
+  ```
+  You should see:
+  ```
+  Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
+  ```
 
 Note that creating the EMR cluster can take a while (typically 5 minutes).
 
-Once applied, make a note of the following (you'll need to provide this information to your Segment contact):
+Once applied, make a note of the following (you'll need to enter these as settings when configuring the Data Lake):
 * The **AWS Region** and **AWS Account ID** where your Data Lake was configured
 * The **Source ID and Slug** for _each_ Segment source that will be connected to the data lake
 * The generated **EMR Cluster ID**
@@ -147,6 +201,8 @@ If all else fails, teardown and start over.
 # Supported Terraform Versions
 
 Terraform 0.11 or higher is supported.
+
+NOTE: Release v0.2.0 onwards only Terraform 0.12 or higher is supported.
 
 # Development
 
