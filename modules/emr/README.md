@@ -48,6 +48,62 @@ Type: `string`
 
 Default: `""`
 
+### master\_instance\_type
+
+Description: EC2 Instance Type for Master
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
+### core\_instance\_type
+
+Description: EC2 Instance Type for Core Nodes
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
+# task\_instance\_type
+
+Description: EC2 Instance Type for Task Nodes
+
+Type: `string`
+
+Default: `"m5.xlarge"`
+
+# core\_instance\_count
+
+Description: Number of instances of Core Nodes
+
+Type: `string`
+
+Default: `"2"`
+
+# core\_instance\_max\_count
+
+Description: Max number of Core Nodes used on autoscale
+
+Type: `string`
+
+Default: `"4"`
+
+# task\_instance\_count
+
+Description: Number of instances of Task Nodes
+
+Type: `string`
+
+Default: `"2"`
+
+# task\_instance\_max\_count
+
+Description: Max number of Task Nodes used on autoscale
+
+Type: `string`
+
+Default: `"4"`
+
 ### tags
 
 Description: A map of tags to add to all resources. A vendor=segment tag will be added automatically (which is also used by the IAM policy to provide Segment access to submit jobs).

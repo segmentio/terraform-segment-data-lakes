@@ -53,6 +53,48 @@ variable "iam_emr_instance_profile" {
   type        = "string"
 }
 
+variable "master_instance_type" {
+  description = "EC2 Instance Type for Master"
+  type        = "string"
+  default     = "m5.xlarge"
+}
+
+variable "core_instance_type" {
+  description = "EC2 Instance Type for Core Nodes"
+  type        = "string"
+  default     = "m5.xlarge"
+}
+
+variable "task_instance_type" {
+  description = "EC2 Instance Type for Task Nodes"
+  type        = "string"
+  default     = "m5.xlarge"
+}
+
+variable "core_instance_count" {
+  description = "Number of Core Nodes"
+  type        = "string"
+  default     = "2"
+}
+
+variable "core_instance_max_count" {
+  description = "Max number of Core Nodes used on autoscale"
+  type        = "string"
+  default     = "4"
+}
+
+variable "task_instance_count" {
+  description = "Number of instances of Task Nodes"
+  type        = "string"
+  default     = "2"
+}
+
+variable "task_instance_max_count" {
+  description = "Max number of Task Nodes used on autoscale"
+  type        = "string"
+  default     = "4"
+}
+
 locals {
   tags = "${merge(map("vendor", "segment"), var.tags)}"
 }
