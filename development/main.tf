@@ -1,6 +1,6 @@
 locals {
   s3_bucket_name = "211459479356-slice-segment-data-lake"
-  external_ids   = ["KnSuvLUHMG" #Direct-Web-QA,
+  external_ids   = ["KnSuvLUHMG", #Direct-Web-QA,
                     "42ukzMtDak" #Storefront-QA
     ] # Segment sources that will be enabled for Data Lakes.
   subnet_id      = "subnet-097e2dc4f7499f77a" # Subnet the EMR cluster will run in.
