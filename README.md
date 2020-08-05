@@ -6,7 +6,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 # Prerequisites
 
-* Accept the [Data Lakes Terms of Service](https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
+* Accept the [Data Lakes Terms of Service] after clicking "Configure Data Lakes" here: (https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
 * Authorized [AWS account](https://aws.amazon.com/account/).
 * Ability to run Terraform with your AWS Account. You must use Terraform 0.11 or higher.
 * A subnet within a VPC for the EMR cluster to run in.
