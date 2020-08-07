@@ -71,8 +71,21 @@ locals {
 
 # This is the target where Segment will write your data.
 # You can skip this if you already have an S3 bucket and just reference that name manually later.
+# If you decide to skip this and use an existing bucket, ensure that you attach a 14 day expiration lifecycle policy to
+# your S3 bucket for the "segment-stage/" prefix.
 resource "aws_s3_bucket" "segment_datalake_s3" {
-  name = "my-first-segment-datalake"
+  bucket = "my-first-segment-datalake"
+  
+  lifecycle_rule {
+    enabled = true
+
+    prefix = "segment-stage/"
+
+    expiration {
+      days = 14
+    }
+    abort_incomplete_multipart_upload_days = 7
+  }
 }
 
 # Creates the IAM Policy that allows Segment to access the necessary resources
