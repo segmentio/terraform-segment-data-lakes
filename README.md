@@ -84,6 +84,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
     expiration {
       days = 14
     }
+
     abort_incomplete_multipart_upload_days = 7
   }
 }
@@ -93,9 +94,9 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
 
-  suffix             = "prod"
-  s3_bucket          = "${aws_s3_bucket.segment_datalake_s3.name}"
-  external_ids       = "${values(local.segment_sources)}"
+  suffix       = "prod"
+  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
+  external_ids = "${values(local.segment_sources)}"
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
