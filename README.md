@@ -95,7 +95,7 @@ module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
 
   suffix       = "prod"
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
+  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.segment_sources)}"
 }
 
@@ -104,7 +104,7 @@ module "iam" {
 module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.2.0"
 
-  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
+  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
  
   # LEAVE THIS AS-IS
