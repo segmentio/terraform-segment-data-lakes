@@ -7,7 +7,6 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
   tags               = "${local.tags}"
 }
 
-
 # Policy attached to the IAM role.
 # https://www.terraform.io/docs/providers/aws/d/iam_policy_document.html
 data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
@@ -59,7 +58,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
       "elasticmapreduce:DescribeCluster",
       "elasticmapreduce:DescribeStep",
       "elasticmapreduce:RunJobFlow",
-      "elasticmapreduce:TerminateJobFlows"
+      "elasticmapreduce:TerminateJobFlows",
     ]
 
     resources = [
@@ -69,6 +68,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "elasticmapreduce:ResourceTag/vendor"
+
       values = [
         "segment",
       ]
@@ -141,27 +141,23 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
   # Gives the EMR service role permission to create cluster
   statement {
     actions = [
-      "iam:PassRole"
+      "iam:PassRole",
     ]
 
     resources = [
       "${aws_iam_role.segment_emr_service_role.arn}",
       "${aws_iam_role.segment_emr_instance_profile_role.arn}",
-      "${aws_iam_role.segment_emr_autoscaling_role.arn}"
+      "${aws_iam_role.segment_emr_autoscaling_role.arn}",
     ]
 
     effect = "Allow"
   }
-
 }
-
 
 resource "aws_iam_role_policy_attachment" "segment_data_lake_role_policy_attachment" {
   role       = "${aws_iam_role.segment_data_lake_iam_role.name}"
   policy_arn = "${aws_iam_policy.segment_data_lake_policy.arn}"
 }
-
-
 
 # IAM role for EMR Service
 resource "aws_iam_role" "segment_emr_service_role" {
@@ -264,8 +260,6 @@ resource "aws_iam_role_policy" "segment_emr_service_policy" {
 EOF
 }
 
-
-
 # IAM Role for EC2 Instance Profile
 resource "aws_iam_role" "segment_emr_instance_profile_role" {
   name = "SegmentEMRInstanceProfileRole${var.suffix}"
@@ -291,7 +285,6 @@ resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
   name  = "SegmentEMRInstanceProfile${var.suffix}"
   roles = ["${aws_iam_role.segment_emr_instance_profile_role.name}"]
 }
-
 
 resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
   name = "SegmentEMRInstanceProfilePolicy${var.suffix}"
@@ -367,7 +360,6 @@ resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
 }
 EOF
 }
-
 
 # IAM Role for EMR Autoscaling role
 resource "aws_iam_role" "segment_emr_autoscaling_role" {
