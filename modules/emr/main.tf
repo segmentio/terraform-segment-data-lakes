@@ -118,7 +118,7 @@ EOF
 
 resource "aws_emr_instance_group" "task" {
   name       = "task_group"
-  cluster_id = join("", aws_emr_cluster.segment_data_lake_emr_cluster.*.id)
+  cluster_id = "${aws_emr_cluster.segment_data_lake_emr_cluster.id}"
 
   instance_type  = "${var.task_instance_type}"
   instance_count = "${var.task_instance_count}"
