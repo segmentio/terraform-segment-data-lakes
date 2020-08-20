@@ -8,7 +8,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 * Accept the [Data Lakes Terms of Service] after clicking "Configure Data Lakes" here: (https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
 * Authorized [AWS account](https://aws.amazon.com/account/).
-* Ability to run Terraform with your AWS Account. Only Terraform 0.11 is supported atm.
+* Ability to run Terraform with your AWS Account. Terraform 0.11 and older are supported.
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -57,7 +57,11 @@ mkdir segment-datalakes-tf
 
 ```hcl
 provider "aws" {
-  region = "us-west-2"  # Replace this with the AWS region your infrastructure is set up in.
+  # Replace this with the AWS region your infrastructure is set up in.
+  region = "us-west-2"
+
+  # Currently our modules require the older v2 AWS provider, as upgrading to v3 has notable breaking changes.
+  version = "~> 2"
 }
 
 locals {
