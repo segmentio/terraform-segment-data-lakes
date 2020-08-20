@@ -8,7 +8,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 * Accept the [Data Lakes Terms of Service] after clicking "Configure Data Lakes" here: (https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
 * Authorized [AWS account](https://aws.amazon.com/account/).
-* Ability to run Terraform with your AWS Account. You must use Terraform 0.11 or higher.
+* Ability to run Terraform with your AWS Account. Only Terraform 0.11 is supported atm.
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -92,7 +92,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.3.0"
 
   suffix       = "prod"
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
@@ -102,7 +102,7 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.2.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.3.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
@@ -113,6 +113,7 @@ module "emr" {
   iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 ```
+
 ## Provision Resources
 * Provide AWS credentials of the account being used. More details here: https://www.terraform.io/docs/providers/aws/index.html
   ```
