@@ -98,7 +98,12 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 module "iam" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.3.0"
 
-  suffix       = "prod"
+  # Suffix is not strictly required if only initializing this module once.
+  # However, if you need to initialize multiple times across different Terraform
+  # workspaces, this hook allows the generated IAM policies to be given unique
+  # names.
+  suffix = "-prod"
+
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.segment_sources)}"
 }
