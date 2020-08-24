@@ -7,7 +7,11 @@ variable "suffix" {
 variable "segment_aws_accounts" {
   description = "ARN of the AWS accounts used by Segment to connect to your Data Lake."
   type        = "list"
-  default     = ["arn:aws:iam::798609480926:root", "arn:aws:iam::294048959147:root"]
+  default = [
+    "arn:aws:iam::294048959147:role/datalakes-aws-worker",
+    "arn:aws:iam::294048959147:role/datalakes-customer-service",
+    "arn:aws:iam::294048959147:role/customer-datalakes-prod-admin",
+  ]
 }
 
 variable "external_ids" {
