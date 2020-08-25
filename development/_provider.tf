@@ -1,7 +1,7 @@
 provider "aws" {
   region  = "us-east-1"
   profile = "development"
-  version = "~> 2"
+  version = "2.50"
 }
 
 terraform {
