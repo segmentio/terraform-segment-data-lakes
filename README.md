@@ -28,9 +28,9 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 # Prerequisites
 
-* Accept the [Data Lakes Terms of Service](https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
+* Accept the [Data Lakes Terms of Service] after clicking "Configure Data Lakes" here: (https://app.segment.com/{workspace_slug}/destinations/catalog?category=DataLakes) (replace the `{workspace_slug}` with your workspace slug).
 * Authorized [AWS account](https://aws.amazon.com/account/).
-* Ability to run Terraform with your AWS Account. You must use Terraform 0.11 or higher.
+* Ability to run Terraform with your AWS Account. Terraform 0.11 and older are supported.
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -79,7 +79,11 @@ mkdir segment-datalakes-tf
 
 ```hcl
 provider "aws" {
-  region = "us-west-2"  # Replace this with the AWS region your infrastructure is set up in.
+  # Replace this with the AWS region your infrastructure is set up in.
+  region = "us-west-2"
+
+  # Currently our modules require the older v2 AWS provider, as upgrading to v3 has notable breaking changes.
+  version = "~> 2"
 }
 
 locals {
@@ -93,26 +97,45 @@ locals {
 
 # This is the target where Segment will write your data.
 # You can skip this if you already have an S3 bucket and just reference that name manually later.
+# If you decide to skip this and use an existing bucket, ensure that you attach a 14 day expiration lifecycle policy to
+# your S3 bucket for the "segment-stage/" prefix.
 resource "aws_s3_bucket" "segment_datalake_s3" {
-  name = "my-first-segment-datalake"
+  bucket = "my-first-segment-datalake"
+  
+  lifecycle_rule {
+    enabled = true
+
+    prefix = "segment-stage/"
+
+    expiration {
+      days = 14
+    }
+
+    abort_incomplete_multipart_upload_days = 7
+  }
 }
 
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.2.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.3.0"
 
-  name         = "segment-data-lake-iam-role"
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
+  # Suffix is not strictly required if only initializing this module once.
+  # However, if you need to initialize multiple times across different Terraform
+  # workspaces, this hook allows the generated IAM policies to be given unique
+  # names.
+  suffix = "-prod"
+
+  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.segment_sources)}"
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.2.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.3.0"
 
-  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.name}"
+  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
  
   # LEAVE THIS AS-IS
@@ -121,6 +144,7 @@ module "emr" {
   iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 ```
+
 ## Provision Resources
 * Provide AWS credentials of the account being used. More details here: https://www.terraform.io/docs/providers/aws/index.html
   ```
@@ -215,6 +239,24 @@ To develop in this repository, you'll want the following tools set up:
 * [Bundler](https://bundler.io)
 
 To run unit tests, you also need an AWS account to be able to provision resources.
+
+# Releasing
+
+Releases are made from the master branch. First, make sure you have the last code from master pulled locally:
+
+```
+* git remote update
+* git checkout master
+* git reset origin/master --hard
+```
+
+Then, use [`git release`](https://github.com/tj/git-extras/blob/master/Commands.md#git-release) to cut a new version that follows [semver](https://semver.org):
+
+```
+git release x.y.z
+```
+
+Lastly, craft a new [Github release](https://github.com/segmentio/terraform-aws-data-lake/releases).
 
 # License
 
