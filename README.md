@@ -38,7 +38,7 @@ brew install terraform
 
 ### Centos/Ubuntu:
 * Follow instructions [here](https://phoenixnap.com/kb/how-to-install-terraform-centos-ubuntu) to install on Centos/Ubuntu OS.
-* Ensure that the version installed in > 0.11.x
+* Ensure that the version installed in > 0.12.x
 
 Verify installation works by running:
 ```
@@ -202,15 +202,13 @@ If all else fails, teardown and start over.
 
 # Supported Terraform Versions
 
-Terraform 0.11 or higher is supported.
-
-NOTE: Release v0.2.0 onwards only Terraform 0.12 or higher is supported.
+Terraform 0.12 or higher is supported.
 
 # Development
 
 To develop in this repository, you'll want the following tools set up:
 
-* [Terraform](https://www.terraform.io/downloads.html), >= 0.12 (note that 0.12 is used to develop this module, even though 0.11 is supported)
+* [Terraform](https://www.terraform.io/downloads.html), >= 0.12
 * [terraform-docs](https://github.com/segmentio/terraform-docs)
 * [tflint](https://github.com/terraform-linters/tflint)
 * [Ruby](https://www.ruby-lang.org/en/documentation/installation/), [>= 2.4.2](https://rvm.io)
