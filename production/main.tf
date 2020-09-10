@@ -1,14 +1,14 @@
 locals {
   s3_bucket_name = "651565136086-slice-segment-data-lake"
   # Segment sources that will be enabled for Data Lakes.
-  external_ids   = [
+  external_ids = [
     "0O8NKjDrUO", # IOS Prod
     "tGYLBslX21", # Android Prod
     "TaxmJpTiB5", # Web Prod
     "N6hYZDFTlp", # Storefront Prod
     "H5V4KbCRon", # Core API
     "0ThsmykUHG", # Slicelink
-    "gm9RbcYqRh", # Braze
+    "uUZbyyEjUarcfNYxdomUAJ", # Braze-prod
     "oIQ4q7dcTK", # partner-websites-prod
     "bH2qnkb0vZ", # slice-os-prod
     "tUbtH4DbIJ", # direct-web
@@ -16,7 +16,7 @@ locals {
     "XPiW5h2e4n"  # consumer-landing-pages-production
 
   ]
-  subnet_id      = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
+  subnet_id = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
 }
 
 locals {
@@ -35,9 +35,9 @@ module "s3_bucket" {
 module "iam" {
   source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.2.0.zip//terraform-aws-data-lake-0.2.0/modules/iam"
 
-  name               = "segment-data-lake-iam-role"
-  s3_bucket          = local.s3_bucket_name
-  external_ids       = local.external_ids
+  name         = "segment-data-lake-iam-role"
+  s3_bucket    = local.s3_bucket_name
+  external_ids = local.external_ids
 }
 
 module "emr" {
