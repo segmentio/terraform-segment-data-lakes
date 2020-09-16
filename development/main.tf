@@ -30,7 +30,7 @@ module "glue" {
 module "iam" {
   source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.3.0.zip//terraform-aws-data-lake-0.3.0/modules/iam"
 
-  name         = "segment-data-lake-iam-role"
+  name         = "SegmentDataLakeRole"
   s3_bucket    = "${local.s3_bucket_name}"
   external_ids = "${local.external_ids}"
 }
