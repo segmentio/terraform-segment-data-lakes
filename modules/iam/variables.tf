@@ -1,13 +1,18 @@
-variable "name" {
-  description = "The name of the role that will be created."
+variable "suffix" {
+  description = "Optional suffix to the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod"
   type        = "string"
-  default     = "segment-data-lake-role"
+  default     = ""
 }
 
 variable "segment_aws_accounts" {
   description = "ARN of the AWS accounts used by Segment to connect to your Data Lake."
   type        = "list"
-  default     = ["arn:aws:iam::798609480926:root", "arn:aws:iam::294048959147:root"]
+
+  default = [
+    "arn:aws:iam::294048959147:role/datalakes-aws-worker",
+    "arn:aws:iam::294048959147:role/datalakes-customer-service",
+    "arn:aws:iam::294048959147:role/customer-datalakes-prod-admin",
+  ]
 }
 
 variable "external_ids" {
