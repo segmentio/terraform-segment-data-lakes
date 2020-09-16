@@ -38,9 +38,6 @@ module "iam" {
   name         = "segment-data-lake-iam-role"
   s3_bucket    = local.s3_bucket_name
   external_ids = local.external_ids
-  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
 
 module "emr" {
@@ -48,4 +45,7 @@ module "emr" {
 
   s3_bucket = local.s3_bucket_name
   subnet_id = local.subnet_id
+  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
