@@ -28,14 +28,14 @@ module "glue" {
 }
 
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.4.0"
+  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.3.0.zip//terraform-aws-data-lake-0.3.0/modules/iam"
 
   s3_bucket    = "${local.s3_bucket_name}"
   external_ids = "${local.external_ids}"
 }
 
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.4.0"
+  source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.3.0.zip//terraform-aws-data-lake-0.3.0/modules/emr"
 
   s3_bucket = "${local.s3_bucket_name}"
   subnet_id = "${local.subnet_id}"
