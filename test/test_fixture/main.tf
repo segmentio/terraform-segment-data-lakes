@@ -18,7 +18,7 @@ module "glue" {
 module "iam" {
   source = "../../modules/iam"
 
-  name         = "data-lake-tf-test-iam-role"
+  suffix       = "dev"
   s3_bucket    = "data_lake_tf_test_s3_bucket"
   external_ids = ["test_external_id_1", "test_external_id_2"]
   tags         = "${local.tags}"

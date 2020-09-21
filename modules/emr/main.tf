@@ -33,7 +33,6 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     instance_count = "${var.core_instance_count}"
     name           = "core_group"
 
-
     ebs_config {
       size                 = "64"
       type                 = "gp2"
@@ -95,7 +94,6 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 EOF
   }
 
-
   configurations_json = <<EOF
   [
     {
@@ -112,13 +110,12 @@ EOF
   ]
 EOF
 
-
   tags = "${local.tags}"
 }
 
 resource "aws_emr_instance_group" "task" {
   name       = "task_group"
-  cluster_id = join("", aws_emr_cluster.segment_data_lake_emr_cluster.*.id)
+  cluster_id = "${aws_emr_cluster.segment_data_lake_emr_cluster.id}"
 
   instance_type  = "${var.task_instance_type}"
   instance_count = "${var.task_instance_count}"

@@ -60,8 +60,6 @@ apply_terraform_dev:
     VAULT_TOKEN: $VAULT_TOKEN_DEV
   tags:
     - development
-  only:
-    - master
   when: manual
   allow_failure: false
 
