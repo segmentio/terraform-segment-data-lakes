@@ -39,7 +39,7 @@ module "emr" {
 
   s3_bucket = "${local.s3_bucket_name}"
   subnet_id = "${local.subnet_id}"
-  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
+  iam_emr_autoscaling_role = "arn:aws:iam::211459479356:role/${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "arn:aws:iam::211459479356:role/${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "arn:aws:iam::211459479356:instance-profile/${module.iam.iam_emr_instance_profile}"
 }
