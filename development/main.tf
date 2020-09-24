@@ -6,6 +6,7 @@ locals {
     "e398yK2CXsbPJFbTRU9Nf8"             #Braze-Dev
   ]                                      # Segment sources that will be enabled for Data Lakes.
   subnet_id = "subnet-097e2dc4f7499f77a" # Subnet the EMR cluster will run in.
+  arn_prefix = "arn:aws:iam::211459479356"
 }
 
 locals {
@@ -39,7 +40,7 @@ module "emr" {
 
   s3_bucket = "${local.s3_bucket_name}"
   subnet_id = "${local.subnet_id}"
-  iam_emr_autoscaling_role = "arn:aws:iam::211459479356:role/${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "arn:aws:iam::211459479356:role/${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "arn:aws:iam::211459479356:instance-profile/${module.iam.iam_emr_instance_profile}"
+  iam_emr_autoscaling_role = "${local.arn_prefix}:role/${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "${local.arn_prefix}:role/${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${local.arn_prefix}:instance-profile/${module.iam.iam_emr_instance_profile}"
 }

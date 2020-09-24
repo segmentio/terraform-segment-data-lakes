@@ -17,6 +17,7 @@ locals {
 
   ]
   subnet_id = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
+  arn_prefix = "arn:aws:iam::651565136086"
 }
 
 locals {
@@ -44,7 +45,7 @@ module "emr" {
 
   s3_bucket = local.s3_bucket_name
   subnet_id = local.subnet_id
-  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
+  iam_emr_autoscaling_role = "${local.arn_prefix}:role/${module.iam.iam_emr_autoscaling_role}"
+  iam_emr_service_role     = "${local.arn_prefix}:role/${module.iam.iam_emr_service_role}"
+  iam_emr_instance_profile = "${local.arn_prefix}:instance-profile/${module.iam.iam_emr_instance_profile}"
 }
