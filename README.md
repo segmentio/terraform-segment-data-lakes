@@ -48,7 +48,7 @@ terraform help
 mkdir segment-datalakes-tf
 ```
 * Create `main.tf` file
-    * Update the `segment_sources` variable in the `locals` to the sources you want to sync 
+    * Update the `segment_sources` variable in the `locals` to the sources you want to sync
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
     * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
 
@@ -76,7 +76,7 @@ locals {
 # your S3 bucket for the "segment-stage/" prefix.
 resource "aws_s3_bucket" "segment_datalake_s3" {
   bucket = "my-first-segment-datalake"
-  
+
   lifecycle_rule {
     enabled = true
 
@@ -93,7 +93,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.4.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.4.1"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
@@ -108,11 +108,11 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.4.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.4.1"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
- 
+
   # LEAVE THIS AS-IS
   iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
   iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
