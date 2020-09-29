@@ -43,8 +43,8 @@ resource "aws_iam_policy" "segment_data_lake_policy" {
   name        = "SegmentDataLakePolicy${var.suffix}"
   path        = "/"
   description = "Gives access to resources in your Data Lake"
-
-  policy = "${data.aws_iam_policy_document.segment_data_lake_policy_document.json}"
+  policy      = "${data.aws_iam_policy_document.segment_data_lake_policy_document.json}"
+  tags        = "${local.tags}"
 }
 
 data "aws_iam_policy_document" "segment_data_lake_policy_document" {
@@ -178,6 +178,8 @@ resource "aws_iam_role" "segment_emr_service_role" {
   ]
 }
 EOF
+
+  tags = "${local.tags}"
 }
 
 resource "aws_iam_role_policy" "segment_emr_service_policy" {
@@ -279,6 +281,8 @@ resource "aws_iam_role" "segment_emr_instance_profile_role" {
   ]
 }
 EOF
+
+  tags = "${local.tags}"
 }
 
 resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
@@ -382,6 +386,8 @@ resource "aws_iam_role" "segment_emr_autoscaling_role" {
   ]
 }
 EOF
+
+  tags = "${local.tags}"
 }
 
 resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
