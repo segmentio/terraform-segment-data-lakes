@@ -1,3 +1,7 @@
+## Requirements
+
+No requirements.
+
 ## Providers
 
 The following providers are used by this module:
@@ -24,22 +28,6 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
-### glue\_database\_name
-
-Description: Name of the Glue database used by the Data Lake.
-
-Type: `string`
-
-Default: `"segment"`
-
-### name
-
-Description: The name of the role that will be created.
-
-Type: `string`
-
-Default: `"segment-data-lake-role"`
-
 ### segment\_aws\_accounts
 
 Description: ARN of the AWS accounts used by Segment to connect to your Data Lake.
@@ -50,10 +38,19 @@ Default:
 
 ```json
 [
-  "arn:aws:iam::798609480926:root",
-  "arn:aws:iam::294048959147:root"
+  "arn:aws:iam::294048959147:role/datalakes-aws-worker",
+  "arn:aws:iam::294048959147:role/datalakes-customer-service",
+  "arn:aws:iam::294048959147:role/customer-datalakes-prod-admin"
 ]
 ```
+
+### suffix
+
+Description: Optional suffix to the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod
+
+Type: `string`
+
+Default: `""`
 
 ### tags
 
@@ -65,5 +62,17 @@ Default: `{}`
 
 ## Outputs
 
-No output.
+The following outputs are exported:
+
+### iam\_emr\_autoscaling\_role
+
+Description: n/a
+
+### iam\_emr\_instance\_profile
+
+Description: n/a
+
+### iam\_emr\_service\_role
+
+Description: n/a
 
