@@ -1,24 +1,24 @@
 # Creates an EMR cluster that will be used to transform and load events into the Data Lake.
 # https://www.terraform.io/docs/providers/aws/r/emr_cluster.html
 resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
-  name          = "${var.cluster_name}"
+  name          = var.cluster_name
   release_label = "emr-5.27.0"
   applications  = ["Hadoop", "Hive", "Spark"]
 
   log_uri = "s3://${var.s3_bucket}/${var.emr_logs_s3_prefix}"
 
   ec2_attributes {
-    subnet_id                         = "${var.subnet_id}"
-    emr_managed_master_security_group = "${var.master_security_group}"
-    emr_managed_slave_security_group  = "${var.slave_security_group}"
-    instance_profile                  = "${var.iam_emr_instance_profile}"
+    subnet_id                         = var.subnet_id
+    emr_managed_master_security_group = var.master_security_group
+    emr_managed_slave_security_group  = var.slave_security_group
+    instance_profile                  = var.iam_emr_instance_profile
   }
 
-  service_role     = "${var.iam_emr_service_role}"
-  autoscaling_role = "${var.iam_emr_autoscaling_role}"
+  service_role     = var.iam_emr_service_role
+  autoscaling_role = var.iam_emr_autoscaling_role
 
   master_instance_group {
-    instance_type = "${var.master_instance_type}"
+    instance_type = var.master_instance_type
     name          = "master_group"
 
     ebs_config {
@@ -29,8 +29,8 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   }
 
   core_instance_group {
-    instance_type  = "${var.core_instance_type}"
-    instance_count = "${var.core_instance_count}"
+    instance_type  = var.core_instance_type
+    instance_count = var.core_instance_count
     name           = "core_group"
 
     ebs_config {
@@ -110,15 +110,15 @@ EOF
   ]
 EOF
 
-  tags = "${local.tags}"
+  tags = local.tags
 }
 
 resource "aws_emr_instance_group" "task" {
   name       = "task_group"
-  cluster_id = "${aws_emr_cluster.segment_data_lake_emr_cluster.id}"
+  cluster_id = aws_emr_cluster.segment_data_lake_emr_cluster.id
 
-  instance_type  = "${var.task_instance_type}"
-  instance_count = "${var.task_instance_count}"
+  instance_type  = var.task_instance_type
+  instance_count = var.task_instance_count
 
   ebs_config {
     size                 = "64"
