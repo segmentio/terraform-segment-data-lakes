@@ -126,7 +126,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
 
   # Explicitly deny Segment to modify IAM or sensible configuration from the Data Lake S3 bucket.
   statement {
-    sid     = "Deny privileged operations"
+    sid     = "DenyPrivilegedOperations"
     actions = [
       "s3:BypassGovernanceRetention",
       "s3:CreateAccessPoint",
