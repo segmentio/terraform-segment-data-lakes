@@ -384,75 +384,82 @@ resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
   name = "SegmentEMRInstanceProfilePolicy${var.suffix}"
   role = "${aws_iam_role.segment_emr_instance_profile_role.id}"
 
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [{
-        "Effect": "Allow",
-        "Resource": "*",
-        "Action": [
-            "cloudwatch:*",
-            "ec2:Describe*",
-            "elasticmapreduce:Describe*",
-            "sdb:*"
-        ]
-    },
-    {
-            "Effect": "Allow",
-            "Action": [
-                "s3:AbortMultipartUpload",
-                "s3:CreateBucket",
-                "s3:DeleteObject",
-                "s3:GetBucketVersioning",
-                "s3:GetObject",
-                "s3:GetObjectTagging",
-                "s3:GetObjectVersion",
-                "s3:ListBucket",
-                "s3:ListBucketMultipartUploads",
-                "s3:ListBucketVersions",
-                "s3:ListMultipartUploadParts",
-                "s3:PutBucketVersioning",
-                "s3:PutObject",
-                "s3:PutObjectTagging"
-            ],
-            "Resource": [
-                "arn:aws:s3:::${var.s3_bucket}",
-                "arn:aws:s3:::${var.s3_bucket}/*"
-            ]
-        },
-    {
-            "Effect": "Allow",
-            "Resource": "*",
-            "Action": [
-                "glue:CreateDatabase",
-                "glue:UpdateDatabase",
-                "glue:DeleteDatabase",
-                "glue:GetDatabase",
-                "glue:GetDatabases",
-                "glue:CreateTable",
-                "glue:UpdateTable",
-                "glue:DeleteTable",
-                "glue:GetTable",
-                "glue:GetTables",
-                "glue:GetTableVersions",
-                "glue:CreatePartition",
-                "glue:BatchCreatePartition",
-                "glue:UpdatePartition",
-                "glue:DeletePartition",
-                "glue:BatchDeletePartition",
-                "glue:GetPartition",
-                "glue:GetPartitions",
-                "glue:BatchGetPartition",
-                "glue:CreateUserDefinedFunction",
-                "glue:UpdateUserDefinedFunction",
-                "glue:DeleteUserDefinedFunction",
-                "glue:GetUserDefinedFunction",
-                "glue:GetUserDefinedFunctions"
-            ]
-        }
-]
+  policy = "${data.aws_iam_policy_document.segment_emr_instance_profile_policy_document.json}"
 }
-EOF
+
+data "aws_iam_policy_document" "segment_emr_instance_profile_policy_document" {
+  statement {
+    resources = [
+      "*"
+    ]
+    actions   = [
+      "glue:CreateDatabase",
+      "glue:UpdateDatabase",
+      "glue:DeleteDatabase",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:CreateTable",
+      "glue:UpdateTable",
+      "glue:DeleteTable",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetTableVersions",
+      "glue:CreatePartition",
+      "glue:BatchCreatePartition",
+      "glue:UpdatePartition",
+      "glue:DeletePartition",
+      "glue:BatchDeletePartition",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:BatchGetPartition",
+      "glue:CreateUserDefinedFunction",
+      "glue:UpdateUserDefinedFunction",
+      "glue:DeleteUserDefinedFunction",
+      "glue:GetUserDefinedFunction",
+      "glue:GetUserDefinedFunctions"
+    ]
+    effect    = "Allow"
+
+  }
+
+  statement {
+    resources = [
+      "*"
+    ]
+
+    actions = [
+      "cloudwatch:*",
+      "ec2:Describe*",
+      "elasticmapreduce:Describe*",
+      "sdb:*"
+    ]
+    effect  = "Allow"
+  }
+
+  statement {
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket}",
+      "arn:aws:s3:::${var.s3_bucket}/*"
+    ]
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:CreateBucket",
+      "s3:DeleteObject",
+      "s3:GetBucketVersioning",
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListBucketVersions",
+      "s3:ListMultipartUploadParts",
+      "s3:PutBucketVersioning",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+    effect  = "Allow"
+  }
 }
 
 # IAM Role for EMR Autoscaling role
