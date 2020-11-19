@@ -103,14 +103,8 @@ module "iam" {
   # names.
   suffix = "-prod"
 
-<<<<<<< Updated upstream
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
-  external_ids = "${values(local.segment_sources)}"
-=======
-  name         = "segment-data-lake-iam-role"
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
   external_ids = "${values(local.external_ids)}"
->>>>>>> Stashed changes
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
