@@ -48,8 +48,8 @@ terraform help
 mkdir segment-datalakes-tf
 ```
 * Create `main.tf` file
-    * Update the `external_ids` variable in the `locals` to the workspace ID. This will allow all sources in the workspace to be synced to the Data Lake without any extra setup.
-      * **Note - Existing users** may be using the `sourceID` here instead of the `workspaceID`, which was the previous configuration. Setting this value as the `sourceID` is still supported for existing users for backwards compatibility. Follow instruction [here](#Using-workspaceID-as-externalID) to migrate to `workspaceID`. This will ensure you do not need to update this value for each source you want to add.
+    * Update the `external_ids` variable in the `locals` section to the workspace ID. This will allow all sources in the workspace to be synced to the Data Lake without any extra setup.
+      * **Note - Existing users** may be using the `sourceID` here instead of the `workspaceID`, which was the previous configuration. Setting this value as the `sourceID` is still supported for existing users for backwards compatibility. Follow instructions [here](#Using-workspaceID-as-the-externalID) to migrate to `workspaceID`. This will ensure you do not need to update this value for each source you want to add.
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
     * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
 
