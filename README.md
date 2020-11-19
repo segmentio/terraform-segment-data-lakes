@@ -48,7 +48,8 @@ terraform help
 mkdir segment-datalakes-tf
 ```
 * Create `main.tf` file
-    * Update the `segment_sources` variable in the `locals` to the sources you want to sync
+    * Update the `external_ids` variable in the `locals` to the workspace ID. This will allow all sources in the workspace to be synced to the Data Lake without any extra setup.
+      * **Note - Existing users** may be using the `sourceID` here instead of the `workspaceID`, which was the previous configuration. Setting this value as the `sourceID` is still supported for existing users for backwards compatibility. Follow instruction [here](#Using-workspaceID-as-externalID) to migrate to `workspaceID`. This will ensure you do not need to update this value for each source you want to add.
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
     * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
 
@@ -62,12 +63,13 @@ provider "aws" {
 }
 
 locals {
-  segment_sources = {
-    # Find these in the Segment UI: (for each source you intend to connect)
-    #  - Settings > SQL Settings > Schema Name (aka: Source Slug)
-    #  - Settings > API Keys > Source ID
-    <Segment Source Slug> = "<Segment Source ID>"
+  external_ids = {
+    # Find these in the Segment UI. Only need to set this once for all sources in
+    # the workspace
+    #  - Settings > General Settings 
+    <Workspace Name> = "<Workspace ID>"
   }
+
 }
 
 # This is the target where Segment will write your data.
@@ -101,8 +103,14 @@ module "iam" {
   # names.
   suffix = "-prod"
 
+<<<<<<< Updated upstream
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.segment_sources)}"
+=======
+  name         = "segment-data-lake-iam-role"
+  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.name}"
+  external_ids = "${values(local.external_ids)}"
+>>>>>>> Stashed changes
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
@@ -196,6 +204,16 @@ exit status 1
 The EMR cluster requires a subnet with a VPC. You can follow [this guide](https://aws.amazon.com/blogs/big-data/launching-and-running-an-amazon-emr-cluster-inside-a-vpc/) to create a subnet.
 
 If all else fails, teardown and start over.
+
+# FAQ
+## Using workspaceID as the externalID
+**Note** - This is only applicable for users currently set up to use the `sourceID` as the `externalID`. All new users should use the `workspaceID` for this value.
+
+To simplify the set up process of not requiring an update to the IAM role for each new source that is added, you can now use the `workspaceID` as the `externalID`. This only requires this value to be set once for the entire workspace. For existing users, to start using the `workspaceID`:
+* Add the `workspaceID` along with the existing `sourceIds` to the list of external ids in your `main.tf`
+* Reach out to `friends@segment.com` with this request to start using the `workspaceID`
+* Once Segment switches you over, you can remove the source ids from this list and not worry about updating it for any new source you wish to add.
+
 
 # Supported Terraform Versions
 
