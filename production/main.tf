@@ -1,6 +1,6 @@
 locals {
   s3_bucket_name = "651565136086-slice-segment-data-lake"
-  # Segment sources that will be enabled for Data Lakes.
+  # Segment sources that will be enabled for Data Lakes. add key from https://app.segment.com/mypizza-slice/sources/<source friendly name>/settings/keys
   external_ids = [
     "0O8NKjDrUO", # IOS Prod
     "tGYLBslX21", # Android Prod
