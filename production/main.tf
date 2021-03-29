@@ -1,6 +1,6 @@
 locals {
   s3_bucket_name = "651565136086-slice-segment-data-lake"
-  # Segment sources that will be enabled for Data Lakes.
+  # Segment sources that will be enabled for Data Lakes. add source id from https://app.segment.com/mypizza-slice/sources/<source friendly name>/settings/keys
   external_ids = [
     "0O8NKjDrUO", # IOS Prod
     "tGYLBslX21", # Android Prod
@@ -13,7 +13,8 @@ locals {
     "bH2qnkb0vZ", # slice-os-prod
     "tUbtH4DbIJ", # direct-web
     "G5yFS1KhpW", # admin
-    "XPiW5h2e4n"  # consumer-landing-pages-production
+    "XPiW5h2e4n",  # consumer-landing-pages-production
+    "dx7TcnkEWVuXwnDJoro7kb" # register-production
 
   ]
   subnet_id = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
