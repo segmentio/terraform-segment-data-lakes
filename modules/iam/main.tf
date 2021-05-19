@@ -44,7 +44,6 @@ resource "aws_iam_policy" "segment_data_lake_policy" {
   path        = "/"
   description = "Gives access to resources in your Data Lake"
   policy      = "${data.aws_iam_policy_document.segment_data_lake_policy_document.json}"
-  tags        = "${local.tags}"
 }
 
 data "aws_iam_policy_document" "segment_data_lake_policy_document" {
