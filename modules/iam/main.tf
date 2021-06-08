@@ -389,7 +389,7 @@ EOF
   tags = "${local.tags}"
 }
 
-resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
+resource "aws_iam_role_policy" "segment_emr_autoscaling_policy" {
   name = "SegmentEMRAutoscalingPolicy${var.suffix}"
   role = "${aws_iam_role.segment_emr_autoscaling_role.id}"
 
