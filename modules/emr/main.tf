@@ -114,7 +114,7 @@ EOF
 }
 
 resource "aws_emr_instance_group" "task" {
-  name       = "${var.task_group}"
+  name       = "${var.task_group_name}"
   cluster_id = "${aws_emr_cluster.segment_data_lake_emr_cluster.id}"
 
   instance_type  = "${var.task_instance_type}"
