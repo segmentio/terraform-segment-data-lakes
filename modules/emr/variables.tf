@@ -32,6 +32,25 @@ variable "cluster_name" {
   default     = "segment-data-lake"
 }
 
+variable "master_instance_name" {
+  description = "Name of the master instance group."
+  type        = "string"
+  default     = "master_group"
+}
+
+variable "core_instance_name" {
+  description = "Name of the core instance group."
+  type        = "string"
+  default     = "core_group"
+}
+
+variable "task_group_name" {
+  description = "Name of the task group."
+  type        = "string"
+  default     = "task_group"
+}
+
+
 variable "emr_logs_s3_prefix" {
   description = "Prefix for writing EMR cluster logs to S3. Make sure to include a trailing slash (/) when setting this."
   type        = "string"
