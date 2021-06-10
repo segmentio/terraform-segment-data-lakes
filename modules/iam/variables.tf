@@ -32,5 +32,5 @@ variable "tags" {
 }
 
 locals {
-  tags = "${merge(map("vendor", "segment"), var.tags)}"
+  tags = merge(map("vendor", "segment"), var.tags)
 }
