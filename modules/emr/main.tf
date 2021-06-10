@@ -19,7 +19,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 
   master_instance_group {
     instance_type = var.master_instance_type
-	name          = var.master_instance_name
+    name          = var.master_instance_name
 
     ebs_config {
       size                 = "64"
