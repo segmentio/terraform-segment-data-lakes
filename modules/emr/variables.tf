@@ -22,7 +22,7 @@ variable "slave_security_group" {
 
 variable "tags" {
   description = "A map of tags to add to all resources. A vendor=segment tag will be added automatically (which is also used by the IAM policy to provide Segment access to submit jobs)."
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
