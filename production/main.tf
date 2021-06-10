@@ -14,8 +14,9 @@ locals {
     "tUbtH4DbIJ", # direct-web
     "G5yFS1KhpW", # admin
     "XPiW5h2e4n",  # consumer-landing-pages-production
-    "dx7TcnkEWVuXwnDJoro7kb" # register-production
-
+    "dx7TcnkEWVuXwnDJoro7kb", # register-production
+    "aMvapgiQQx7yiAADNDATTx", # drivers-app-ios-production
+    "nHz8f4u55CHBWXPNhSJsVY" # drivers-app-android-production
   ]
   subnet_id = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
   arn_prefix = "arn:aws:iam::651565136086"
