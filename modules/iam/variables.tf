@@ -1,6 +1,6 @@
 variable "suffix" {
   description = "Optional suffix to the IAM roles/policies created by this module. Allows creating multiple such modules in the same AWS account. Common practice is to set the env here ie dev/stage/prod"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
@@ -22,7 +22,7 @@ variable "external_ids" {
 
 variable "s3_bucket" {
   description = "Name of the S3 bucket used by the Data Lake."
-  type        = "string"
+  type        = string
 }
 
 variable "tags" {
