@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     aws-eventstream (1.0.3)
     aws-partitions (1.243.0)
@@ -1010,7 +1010,7 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    public_suffix (4.0.1)
+    public_suffix (4.0.6)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
