@@ -58,8 +58,8 @@ provider "aws" {
   # Replace this with the AWS region your infrastructure is set up in.
   region = "us-west-2"
 
-  # Currently our modules require the older v2 AWS provider, as upgrading to v3 has notable breaking changes.
-  version = "~> 2"
+  # Currently our modules support both the version 2 and version 3 of the AWS provider.
+  version = "~> 3"
 }
 
 locals {
@@ -103,8 +103,8 @@ module "iam" {
   # names.
   suffix = "-prod"
 
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
-  external_ids = "${values(local.external_ids)}"
+  s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
+  external_ids = values(local.external_ids)
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
@@ -112,13 +112,13 @@ module "iam" {
 module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.4.2"
 
-  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
+  s3_bucket = aws_s3_bucket.segment_datalake_s3.id
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
 
   # LEAVE THIS AS-IS
-  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
+  iam_emr_autoscaling_role = module.iam.iam_emr_autoscaling_role
+  iam_emr_service_role     = module.iam.iam_emr_service_role
+  iam_emr_instance_profile = module.iam.iam_emr_instance_profile
 }
 ```
 

@@ -3,8 +3,8 @@
 resource "aws_iam_role" "segment_data_lake_iam_role" {
   name               = "SegmentDataLakeRole${var.suffix}"
   description        = "IAM Role used by Segment"
-  assume_role_policy = "${data.aws_iam_policy_document.segment_data_lake_assume_role_policy_document.json}"
-  tags               = "${local.tags}"
+  assume_role_policy = data.aws_iam_policy_document.segment_data_lake_assume_role_policy_document.json
+  tags               = local.tags
 }
 
 # Policy attached to the IAM role.
@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = "${var.segment_aws_accounts}"
+      identifiers = var.segment_aws_accounts
     }
 
     effect = "Allow"
@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
-      values   = "${var.external_ids}"
+      values   = var.external_ids
     }
   }
 }
@@ -43,7 +43,7 @@ resource "aws_iam_policy" "segment_data_lake_policy" {
   name        = "SegmentDataLakePolicy${var.suffix}"
   path        = "/"
   description = "Gives access to resources in your Data Lake"
-  policy      = "${data.aws_iam_policy_document.segment_data_lake_policy_document.json}"
+  policy      = data.aws_iam_policy_document.segment_data_lake_policy_document.json
 }
 
 data "aws_iam_policy_document" "segment_data_lake_policy_document" {
@@ -144,9 +144,9 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
     ]
 
     resources = [
-      "${aws_iam_role.segment_emr_service_role.arn}",
-      "${aws_iam_role.segment_emr_instance_profile_role.arn}",
-      "${aws_iam_role.segment_emr_autoscaling_role.arn}",
+      aws_iam_role.segment_emr_service_role.arn,
+      aws_iam_role.segment_emr_instance_profile_role.arn,
+      aws_iam_role.segment_emr_autoscaling_role.arn,
     ]
 
     effect = "Allow"
@@ -154,8 +154,8 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
 }
 
 resource "aws_iam_role_policy_attachment" "segment_data_lake_role_policy_attachment" {
-  role       = "${aws_iam_role.segment_data_lake_iam_role.name}"
-  policy_arn = "${aws_iam_policy.segment_data_lake_policy.arn}"
+  role       = aws_iam_role.segment_data_lake_iam_role.name
+  policy_arn = aws_iam_policy.segment_data_lake_policy.arn
 }
 
 # IAM role for EMR Service
@@ -178,12 +178,12 @@ resource "aws_iam_role" "segment_emr_service_role" {
 }
 EOF
 
-  tags = "${local.tags}"
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy" "segment_emr_service_policy" {
   name = "SegmentEMRServicePolicy${var.suffix}"
-  role = "${aws_iam_role.segment_emr_service_role.id}"
+  role = aws_iam_role.segment_emr_service_role.id
 
   policy = <<EOF
 {
@@ -281,17 +281,17 @@ resource "aws_iam_role" "segment_emr_instance_profile_role" {
 }
 EOF
 
-  tags = "${local.tags}"
+  tags = local.tags
 }
 
 resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
-  name  = "SegmentEMRInstanceProfile${var.suffix}"
-  roles = ["${aws_iam_role.segment_emr_instance_profile_role.name}"]
+  name = "SegmentEMRInstanceProfile${var.suffix}"
+  role = aws_iam_role.segment_emr_instance_profile_role.name
 }
 
 resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
   name = "SegmentEMRInstanceProfilePolicy${var.suffix}"
-  role = "${aws_iam_role.segment_emr_instance_profile_role.id}"
+  role = aws_iam_role.segment_emr_instance_profile_role.id
 
   policy = <<EOF
 {
@@ -386,12 +386,12 @@ resource "aws_iam_role" "segment_emr_autoscaling_role" {
 }
 EOF
 
-  tags = "${local.tags}"
+  tags = local.tags
 }
 
-resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {
+resource "aws_iam_role_policy" "segment_emr_autoscaling_policy" {
   name = "SegmentEMRAutoscalingPolicy${var.suffix}"
-  role = "${aws_iam_role.segment_emr_autoscaling_role.id}"
+  role = aws_iam_role.segment_emr_autoscaling_role.id
 
   policy = <<EOF
 {
