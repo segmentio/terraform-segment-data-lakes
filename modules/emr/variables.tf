@@ -20,9 +20,15 @@ variable "slave_security_group" {
   default     = ""
 }
 
+variable "key_name" {
+  description = "EC2 Key Name"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "A map of tags to add to all resources. A vendor=segment tag will be added automatically (which is also used by the IAM policy to provide Segment access to submit jobs)."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -56,19 +62,19 @@ variable "iam_emr_instance_profile" {
 variable "master_instance_type" {
   description = "EC2 Instance Type for Master"
   type        = string
-  default     = "m5.xlarge"
+  default     = "c5.xlarge"
 }
 
 variable "core_instance_type" {
   description = "EC2 Instance Type for Core Nodes"
   type        = string
-  default     = "m5.xlarge"
+  default     = "c5.xlarge"
 }
 
 variable "task_instance_type" {
   description = "EC2 Instance Type for Task Nodes"
   type        = string
-  default     = "m5.xlarge"
+  default     = "c5.xlarge"
 }
 
 variable "core_instance_count" {

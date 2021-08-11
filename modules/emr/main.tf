@@ -12,6 +12,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     emr_managed_master_security_group = var.master_security_group
     emr_managed_slave_security_group  = var.slave_security_group
     instance_profile                  = var.iam_emr_instance_profile
+    key_name                          = var.key_name
   }
 
   service_role     = var.iam_emr_service_role

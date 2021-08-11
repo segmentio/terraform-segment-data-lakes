@@ -64,15 +64,27 @@ Default: `{}`
 
 The following outputs are exported:
 
-### iam\_emr\_autoscaling\_role
+### iam\_emr\_autoscaling\_role\_arn
 
 Description: n/a
 
-### iam\_emr\_instance\_profile
+### iam\_emr\_instance\_profile\_arn
 
 Description: n/a
 
-### iam\_emr\_service\_role
+### iam\_emr\_instance\_profile\_name
+
+Description: n/a
+
+### iam\_emr\_service\_role\_name
+
+Description: n/a
+
+### iam\_segment\_data\_lake\_role\_arn
+
+Description: n/a
+
+### iam\_segment\_data\_lake\_role\_name
 
 Description: n/a
 
