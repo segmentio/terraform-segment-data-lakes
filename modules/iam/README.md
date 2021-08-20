@@ -1,6 +1,6 @@
 ## Requirements
 
-No requirements.
+Works for version >= 0.12
 
 ## Providers
 

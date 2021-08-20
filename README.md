@@ -211,7 +211,7 @@ To simplify the set up process of not requiring an update to the IAM role for ea
 
 # Supported Terraform Versions
 
-Terraform 0.11 or higher is supported.
+Terraform 0.12 or higher is supported.
 
 In order to support more versions of Terraform, the AWS Provider needs to held at v2,
 as v3 has breaking changes we don't currently support. Our example `main.tf` has the
