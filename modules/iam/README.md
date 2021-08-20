@@ -1,7 +1,6 @@
 ## Requirements
 
-Works for version >= 0.12.
-Tags before 2021-08-20 work for version >=0.14
+Works for version >= 0.11.
 
 ## Providers
 
