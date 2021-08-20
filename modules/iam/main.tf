@@ -285,7 +285,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
-  name  = "SegmentEMRInstanceProfile${var.suffix}"
+  name = "SegmentEMRInstanceProfile${var.suffix}"
   role = ["${aws_iam_role.segment_emr_instance_profile_role.name}"]
 }
 
