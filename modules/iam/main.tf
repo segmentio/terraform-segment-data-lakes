@@ -236,10 +236,6 @@ resource "aws_iam_role_policy" "segment_emr_service_policy" {
                 "iam:GetRolePolicy",
                 "iam:ListInstanceProfiles",
                 "iam:ListRolePolicies",
-                "iam:PassRole",
-                "s3:CreateBucket",
-                "s3:Get*",
-                "s3:List*",
                 "sdb:BatchPutAttributes",
                 "sdb:Select",
                 "sqs:CreateQueue",
@@ -260,6 +256,7 @@ resource "aws_iam_role_policy" "segment_emr_service_policy" {
 }
 EOF
 }
+
 
 # IAM Role for EC2 Instance Profile
 resource "aws_iam_role" "segment_emr_instance_profile_role" {
