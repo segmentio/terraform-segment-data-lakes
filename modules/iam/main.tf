@@ -257,7 +257,6 @@ resource "aws_iam_role_policy" "segment_emr_service_policy" {
 EOF
 }
 
-
 # IAM Role for EC2 Instance Profile
 resource "aws_iam_role" "segment_emr_instance_profile_role" {
   name = "SegmentEMRInstanceProfileRole${var.suffix}"
