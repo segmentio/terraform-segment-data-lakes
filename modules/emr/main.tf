@@ -2,7 +2,7 @@
 # https://www.terraform.io/docs/providers/aws/r/emr_cluster.html
 resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   name          = "${var.cluster_name}"
-  release_label = "emr-5.27.0"
+  release_label = "emr-5.33.0"
   applications  = ["Hadoop", "Hive", "Spark"]
 
   log_uri = "s3://${var.s3_bucket}/${var.emr_logs_s3_prefix}"
