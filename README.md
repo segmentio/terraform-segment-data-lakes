@@ -95,7 +95,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.4.3"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.5.0"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
@@ -110,7 +110,7 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.4.3"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.5.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
