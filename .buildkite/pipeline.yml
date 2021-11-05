@@ -1,0 +1,37 @@
+steps:
+  - label: ':brain: Everything'
+    env:
+      SEGMENT_CONTEXTS: "snyk,aws-credentials"
+      SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
+    agents:
+      queue: v1
+    commands: |
+      ## echoing `---` marks a new section in buildkite's logs
+      echo '--- Vendoring dependencies'
+      ## We vendor our dependencies so we don't have to pass Github auth credentials into
+      ## Docker during testing or building
+      go mod vendor
+
+      echo '--- Snyk scan'
+      ## bk-snyk does what most people expect from snyk. If you need to do something else,
+      ## call the `snyk` CLI directly
+      bk-snyk
+
+      echo '--- Running docker-compose tests'
+      docker-compose run tests
+
+      ## TREB_IMAGE_TAG is a handy pre-formatted docker tag, suitable for treb. Defined at:
+      ## https://paper.dropbox.com/doc/Buildkite-v1-User-Guide-9EI0hXYSkcOb2EHotsVSD#:uid=622636111061945165346978&h2=Standard-Environment-Variables
+      ## Double dollar ($$) delays interpolation until run time, instead of
+      ## pipeline upload time
+      echo '--- Building docker image'
+      docker build -t "$${TREB_IMAGE_TAG}" .
+
+      echo '--- Pushing image to ECR'
+      docker push "$${TREB_IMAGE_TAG}"
+
+      echo '--- Publishing to trebuchet'
+      ## treb-publish is a helper tool built into our buildkite-agent-* images
+      ## https://paper.dropbox.com/doc/Buildkite-v1-User-Guide-9EI0hXYSkcOb2EHotsVSD#:h2=treb-publish
+      ## Note: this publishes every manifest in .run
+      treb-publish .run/*.yml
