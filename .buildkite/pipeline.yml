@@ -5,4 +5,16 @@ steps:
     agents:
       queue: v1
     commands: |
-      .buildkite/terraform-lint-each.sh
+      tflint modules/glue
+      tflint modules/iam
+      tflint modules/emr
+
+    - label: ":lint-roller: fmtcheck"
+        env:
+          SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
+        docker:
+          - image: hashicorp/terraform:0.12.16
+        agents:
+          queue: v1
+        commands: |
+          terraform fmt -recursive -check=true
