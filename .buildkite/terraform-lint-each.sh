@@ -31,7 +31,7 @@ cat atlantis.yaml | \
         ;;
     esac
     docker run -v `pwd`/"$dir":/workdir --workdir /workdir hashicorp/terraform:"$version" \
-      fmt $TERRAFORM_FLAGS $flags "." || {
+      fmt -check -diff $flags "." || {
         echo '^^^ +++'
         exit 1
       }
