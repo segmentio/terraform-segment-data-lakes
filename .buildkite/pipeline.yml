@@ -3,7 +3,7 @@ steps:
     plugins:
       - docker#v3.3.0:
           image: hashicorp/terraform:0.12.31
-          commands: "-version"
+          commands: ["-version"]
 
   - label: ":lint-roller: Lint"
     env:
