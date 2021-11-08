@@ -1,5 +1,5 @@
 steps:
-   - label: ":lint-roller: fmtcheck"
+  - label: ":lint-roller: fmtcheck"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
     agents:
