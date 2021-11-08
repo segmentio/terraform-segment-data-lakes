@@ -4,19 +4,17 @@ steps:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
     agents:
       queue: v1
-    commands: |
-      make fmt
     plugins:
       - docker#v3.3.0:
           image: hashicorp/terraform:0.12.31
+          commands: ["fmt", "-check=true"]
 
   - label: ":lint-roller: Lint"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
     agents:
       queue: v1
-    commands: |
-      make lint
     plugins:
       - docker#v3.3.0:
           image: wata727/tflint:0.12.1
+          commands: make lint
