@@ -5,7 +5,7 @@ steps:
     agents:
       queue: v1
     commands: |
-      make fmtchk
+      make fmt
   - label: ":lint-roller: Lint"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'

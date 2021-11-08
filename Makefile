@@ -6,9 +6,7 @@ fmt:
 	terraform fmt -recursive
 
 lint:
-	tflint --disable-rule=terraform_deprecated_interpolation ./modules/glue
-	tflint --disable-rule=terraform_deprecated_interpolation ./modules/iam
-	tflint --disable-rule=terraform_deprecated_interpolation ./modules/emr
+	yarn lint
 
 docs:
 	terraform-docs markdown document ./modules/glue > ./modules/glue/README.md
