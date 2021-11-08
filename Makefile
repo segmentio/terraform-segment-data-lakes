@@ -2,10 +2,8 @@
 
 # TODO: Use the same targets on CI, so we don't duplicate the commands and configuration.
 
-Q=@
-
-fmt:
-	$Qterraform fmt
+fmtchk:
+	terraform fmt -recursive -check .
 
 lint:
 	tflint --disable-rule=terraform_deprecated_interpolation ./modules/glue
