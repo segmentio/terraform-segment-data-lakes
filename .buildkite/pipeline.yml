@@ -8,7 +8,7 @@ steps:
       make fmt
     plugins:
       - docker#v3.3.0:
-          image: hashicorp/terraform:0.12.16
+          image: hashicorp/terraform:0.12.31
 
   - label: ":lint-roller: Lint"
     env:
