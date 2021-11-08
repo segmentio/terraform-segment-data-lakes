@@ -1,18 +1,16 @@
 steps:
-  - label: ":lint-roller: fmtcheck"
+   - label: ":lint-roller: fmtcheck"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
     agents:
       queue: v1
     commands: |
-      terraform fmt -recursive -check=true
+      make fmtchk
   - label: ":lint-roller: Lint"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
     agents:
       queue: v1
     commands: |
-      tflint modules/glue
-      tflint modules/iam
-      tflint modules/emr
+      make lint
 
