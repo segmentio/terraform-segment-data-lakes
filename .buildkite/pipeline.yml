@@ -6,6 +6,10 @@ steps:
       queue: v1
     commands: |
       make fmt
+    plugins:
+      docker:
+        - image: hashicorp/terraform:0.12.16
+
   - label: ":lint-roller: Lint"
     env:
       SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
@@ -13,4 +17,6 @@ steps:
       queue: v1
     commands: |
       make lint
-
+    plugins:
+      docker:
+        - image: wata727/tflint:0.12.1
