@@ -1,0 +1,12 @@
+steps:
+  - label: ":lint-roller: fmtcheck"
+    plugins:
+      - docker#v3.3.0:
+          image: hashicorp/terraform:0.12.31
+          command: ["fmt", "-recursive"]
+
+  - label: ":lint-roller: Lint"
+    plugins:
+      - docker#v3.3.0:
+          image: wata727/tflint:0.12.1
+          commands: make lint

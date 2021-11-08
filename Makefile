@@ -2,9 +2,6 @@
 
 # TODO: Use the same targets on CI, so we don't duplicate the commands and configuration.
 
-fmt:
-	terraform fmt -recursive
-
 lint:
 	tflint --disable-rule=terraform_deprecated_interpolation ./modules/glue
 	tflint --disable-rule=terraform_deprecated_interpolation ./modules/iam
