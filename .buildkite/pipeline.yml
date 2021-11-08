@@ -7,11 +7,7 @@ steps:
     plugins:
       - docker#v3.3.0:
           image: hashicorp/terraform:0.12.31
-          commands:
-            - "fmt"
-            - "-recursive"
-            - "-check"
-            - "."
+          commands: make fmt
 
   - label: ":lint-roller: Lint"
     env:

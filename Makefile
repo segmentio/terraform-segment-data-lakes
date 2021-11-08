@@ -3,7 +3,7 @@
 # TODO: Use the same targets on CI, so we don't duplicate the commands and configuration.
 
 fmtchk:
-	terraform fmt -recursive -check .
+	terraform fmt -recursive ./modules
 
 lint:
 	tflint --disable-rule=terraform_deprecated_interpolation ./modules/glue
