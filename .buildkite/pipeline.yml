@@ -6,10 +6,6 @@ steps:
           command: ["fmt", "-recursive"]
 
   - label: ":lint-roller: Lint"
-    env:
-      SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.14'
-    agents:
-      queue: v1
     plugins:
       - docker#v3.3.0:
           image: wata727/tflint:0.12.1
