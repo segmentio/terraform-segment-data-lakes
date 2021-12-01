@@ -6,6 +6,7 @@ variable "url" {
 variable "token" {
   description = "Name of the S3 bucket used by the Data Lake."
   type        = "string"
+  sensitive = true
 }
 
 variable "environment" {
