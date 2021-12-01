@@ -34,20 +34,31 @@ if __name__ == '__main__':
     parser.add_argument('--env', '-e', required=True, help='environment of job')
     args = parser.parse_args()
 
-
-
-    sources = ['ios_production',
+    prod = [
+    'ios_production',
     'restaurant_slicelink_production',
-    'admin','core_api',
+    'admin',
+    'core_api',
     'storefront_production',
     'consumer_landing_pages_production',
     'slice_drivers_app_ios_production',
-    'sliceos_production','register_production',
+    'sliceos_production',
+    'register_production',
     'appboy',
     'slice_drivers_app_android_production',
     'partner_websites_prod',
     'android_production',
-    'direct_web','braze_prod'] if args.env == 'prod' else ['admin_qa','storefront_qa','direct_web_qa','core_api_development','braze_dev','admin_development']
+    'direct_web','braze_prod']
+
+    dev = [
+    'admin_qa',
+    'storefront_qa',
+    'direct_web_qa',
+    'core_api_development',
+    'braze_dev',
+    'admin_development']
+
+    sources = prod if args.env == 'prod' else dev
 
     responses = [(src, send_cluster_patch(args.url,args.api_pw,args.cluster_id,src)) for src in sources]
     print(responses)

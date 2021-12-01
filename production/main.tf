@@ -22,6 +22,10 @@ locals {
   arn_prefix = "arn:aws:iam::651565136086"
 }
 
+data "aws_secretsmanager_secret_version" "segment_secrets" {
+  secret_id = "dataeng/segment"
+}
+
 locals {
   tags = {
     s3_bucket_name = "${local.s3_bucket_name}"
@@ -50,4 +54,13 @@ module "emr" {
   iam_emr_autoscaling_role = "${local.arn_prefix}:role/${module.iam.iam_emr_autoscaling_role}"
   iam_emr_service_role     = "${local.arn_prefix}:role/${module.iam.iam_emr_service_role}"
   iam_emr_instance_profile = "${local.arn_prefix}:instance-profile/${module.iam.iam_emr_instance_profile}"
+}
+
+module "segment" {
+
+  source = "../modules/segment"
+  cluster_id  = module.emr.cluster_id
+  environment = "prod"
+  token       = jsondecode(data.aws_secretsmanager_secret_version.segment_secrets.secret_string)["token"]
+  url         = jsondecode(data.aws_secretsmanager_secret_version.segment_secrets.secret_string)["url"]
 }
