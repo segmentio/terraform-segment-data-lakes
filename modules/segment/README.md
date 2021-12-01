@@ -1,0 +1,1 @@
+add new sources to set_cluster list for each envronment
