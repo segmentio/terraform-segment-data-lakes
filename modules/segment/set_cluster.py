@@ -1,4 +1,3 @@
-
 import argparse
 import requests
 
@@ -22,9 +21,6 @@ def payload(cluster_id,source):
 def send_cluster_patch(url,token,cluster_id,source):
     headers = {'Authorization': f'Bearer {token}'}
     return requests.patch(f'{url}/workspaces/mypizza-slice/sources/{source}/destinations/data-lakes/',json=payload(cluster_id,source),headers=headers)
-
-
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
