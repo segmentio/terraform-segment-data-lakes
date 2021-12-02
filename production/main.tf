@@ -54,6 +54,10 @@ module "emr" {
   iam_emr_autoscaling_role = "${local.arn_prefix}:role/${module.iam.iam_emr_autoscaling_role}"
   iam_emr_service_role     = "${local.arn_prefix}:role/${module.iam.iam_emr_service_role}"
   iam_emr_instance_profile = "${local.arn_prefix}:instance-profile/${module.iam.iam_emr_instance_profile}"
+  core_instance_count = 3
+  core_instance_max_count = 6
+  task_instance_count = 3
+  task_instance_max_count = 6
 }
 
 module "segment" {
