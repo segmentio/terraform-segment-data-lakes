@@ -7,9 +7,9 @@ provider "aws" {
     tags = {
       department = "data"
       subteam    = "dataeng"
-      git = https://github.com/slicelife/terraform-aws-data-lake/
-      environment = production
-      terraformed = yes
+      git = "https://github.com/slicelife/terraform-aws-data-lake/"
+      environment = "production"
+      terraformed = "yes"
     }
   }
 }
