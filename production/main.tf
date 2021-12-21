@@ -45,6 +45,7 @@ locals {
 module "s3_bucket" {
   source    = "../modules/s3_bucket"
   s3_bucket = local.s3_bucket_name
+  tags = local.default_tags
 }
 
 module "iam" {
@@ -52,6 +53,8 @@ module "iam" {
 
   s3_bucket    = local.s3_bucket_name
   external_ids = local.external_ids
+  tags = local.default_tags
+
 }
 
 module "emr" {
@@ -66,6 +69,8 @@ module "emr" {
   core_instance_max_count = 6
   task_instance_count = 3
   task_instance_max_count = 6
+  tags = local.default_tags
+
 }
 
 module "segment" {
