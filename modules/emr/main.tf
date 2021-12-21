@@ -110,7 +110,7 @@ EOF
   ]
 EOF
 
-  tags = "${local.tags}"
+  tags = local.tags
 }
 
 resource "aws_emr_instance_group" "task" {

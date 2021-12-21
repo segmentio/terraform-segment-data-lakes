@@ -4,7 +4,7 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
   name               = "SegmentDataLakeRole${var.suffix}"
   description        = "IAM Role used by Segment"
   assume_role_policy = "${data.aws_iam_policy_document.segment_data_lake_assume_role_policy_document.json}"
-  tags               = "${local.tags}"
+  tags               = local.tags
 }
 
 # Policy attached to the IAM role.
