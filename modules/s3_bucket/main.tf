@@ -8,7 +8,7 @@ module "s3_bucket" {
     enabled = false
   }
 
-  tags = var.tags
+  tags = local.tags
 
   policy = <<POLICY
   {
