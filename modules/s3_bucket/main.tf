@@ -8,6 +8,8 @@ module "s3_bucket" {
     enabled = false
   }
 
+  tags = local.tags
+
   policy = <<POLICY
   {
     "Version": "2008-10-17",

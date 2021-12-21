@@ -20,6 +20,14 @@ locals {
   ]
   subnet_id = "subnet-9f90a1d4" # Subnet the EMR cluster will run in.
   arn_prefix = "arn:aws:iam::651565136086"
+
+  default_tags =  {
+    department = "data"
+    subteam    = "dataeng"
+    git = "https://github.com/slicelife/terraform-aws-data-lake/"
+    environment = "production"
+    terraformed = "yes"
+  }
 }
 
 data "aws_secretsmanager_secret_version" "segment_secrets" {
