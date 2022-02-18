@@ -4,7 +4,7 @@
 # makes the schema available to various tools like Athena, Spectrum, EMR etc.
 # https://www.terraform.io/docs/providers/aws/r/glue_catalog_database.html
 resource "aws_lakeformation_permissions" "segment_data_lake_formation" {
-  role        = var.principal
+  principal        = var.principal
   permissions = ["ALL"]
 
   database {
