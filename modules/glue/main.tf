@@ -8,7 +8,7 @@ resource "aws_lakeformation_permissions" "segment_data_lake_formation" {
   permissions = ["ALL"]
 
   database {
-    name       = var.name
+    name       = aws_glue_catalog_database.segment_data_lake_glue_catalog.name
   }
 }
 
