@@ -10,7 +10,7 @@ output "iam_emr_autoscaling_role" {
   value = "${aws_iam_role.segment_emr_autoscaling_role.name}"
 }
 
-output "data_lake_iam_role" {
-  value = "${aws_iam_role.segment_data_lake_iam_role.name}"
+output "data_lake_iam_role_arn" {
+  value = "${aws_iam_role.segment_data_lake_iam_role.arn}"
 }
 
