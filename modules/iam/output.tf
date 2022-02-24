@@ -11,7 +11,7 @@ output "iam_emr_autoscaling_role" {
 }
 
 output "data_lake_iam_role_arn" {
-  value = "${aws_iam_role.segment_emr_instance_profile_role.arn}"
+  value = "${aws_iam_role.segment_data_lake_iam_role.arn}"
 }
 
 output "iam_emr_instance_profile_arn" {
