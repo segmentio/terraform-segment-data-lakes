@@ -3,7 +3,7 @@ resource "aws_lakeformation_permissions" "segment_data_lake_formation_table" {
   permissions = ["ALL"]
 
   table {
-    database_name = aws_lakeformation_permissions.segment_data_lake_formation_database.database.name
+    database_name = var.name
     wildcard = true
   }
 }
