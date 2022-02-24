@@ -1,9 +1,14 @@
-variable "principal" {
-  description = "The arn of the principal."
-  type        = list(string)
+variable "emr_role" {
+  description = "The arn of the emr role."
+  type        = "string"
+}
+
+variable "datalake_role" {
+  description = "The arn of the emr role."
+  type        = "string"
 }
 
 variable "name" {
   description = "The name of the database."
-  type        = list(string)
+  type        = "string"
 }
