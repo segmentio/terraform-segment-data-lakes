@@ -1,9 +1,5 @@
-data "aws_iam_role" "role_name" {
-  name = var.principal
-}
-
 resource "aws_lakeformation_permissions" "segment_data_lake_formation_table" {
-  principal = data.aws_iam_role.role_name.arn
+  principal = var.principal
   permissions = ["ALL"]
 
   table {
@@ -13,7 +9,7 @@ resource "aws_lakeformation_permissions" "segment_data_lake_formation_table" {
 }
 
 resource "aws_lakeformation_permissions" "segment_data_lake_formation_database" {
-  principal   = data.aws_iam_role.role_name.arn
+  principal   = var.principal
   permissions = ["ALL"]
 
   database {
