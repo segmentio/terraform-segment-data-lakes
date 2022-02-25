@@ -28,7 +28,7 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_databas
 
 #This block will set the emr_instance_profile_role as a Database creator.
 resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_database_creator_permission" {
-  principal   = to_list(var.iam_roles)[1]
+  principal   = tolist(var.iam_roles)[1]
   permissions = ["CREATE_DATABASE"]
 
   catalog_resource = true
