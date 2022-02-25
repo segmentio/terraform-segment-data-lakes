@@ -5,7 +5,6 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_table_p
   for_each = var.iam_roles
 
   principal = each.key
-  #principal = var.emr_instance_profile_role
   permissions = ["ALL"]
 
   table {
@@ -18,7 +17,6 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_databas
   for_each = var.iam_roles
 
   principal = each.key
-  #principal   = var.emr_instance_profile_role
   permissions = ["ALL"]
 
   database {
@@ -33,23 +31,4 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_databas
 
   catalog_resource = true
 }
-/*
-resource "aws_lakeformation_permissions" "segment_data_lake_formation_table_datalake" {
-  principal = var.segment_datalake_role
-  permissions = ["ALL"]
 
-  table {
-    database_name = var.name
-    wildcard = true
-  }
-}
-
-resource "aws_lakeformation_permissions" "segment_data_lake_formation_database_datalake" {
-  principal   = var.segment_datalake_role
-  permissions = ["ALL"]
-
-  database {
-    name       = var.name
-  }
-}
-*/
