@@ -8,9 +8,9 @@ variable "segment_datalake_role" {
   type        = "string"
 }*/
 
-variable "glue_db_name" {
+variable "name" {
   description = "The name of the database."
-  type        = list(string)
+  type        = "string"
 }
 
 variable "iam_roles" {
