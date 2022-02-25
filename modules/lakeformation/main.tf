@@ -9,7 +9,7 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_table_p
   permissions = ["ALL"]
 
   table {
-    for_each = var.name
+    for_each = var.glue_db_name
 
     database_name = each.key
     wildcard = true
@@ -24,7 +24,7 @@ resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_databas
   permissions = ["ALL"]
 
   database {
-    for_each = var.name
+    for_each = var.glue_db_name
 
     name       = each.key
   }
