@@ -15,5 +15,5 @@ variable "name" {
 
 variable "iam_roles" {
   description = "The arn of the segment datalake iam role."
-  type        = list(string)
+  type        = set(string)
 }
