@@ -1,8 +1,7 @@
 ## Requirements
 
 Works for version >= 0.12
-Note: If you have teraform 0.12, you will have to run the setup separately for each database. For version >=0.13, the setup will work for a set of databases.
-
+Note: If you have teraform 0.12, you will have to run the setup separately for each database. For version >=0.13, you can use for_each for a list of databases (see README for an example).
 
 ## Providers
 
