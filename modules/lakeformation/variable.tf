@@ -4,6 +4,6 @@ variable "name" {
 }
 
 variable "iam_roles" {
-  description = "The arn of the segment datalake iam role."
+  description = "The arns of the segment datalake iam role and emr instance profile role."
   type        = map(string)
 }
