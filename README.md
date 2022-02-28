@@ -6,7 +6,6 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 * Authorized [AWS account](https://aws.amazon.com/account/).
 * Ability to run Terraform with your AWS Account. Terraform 0.11+ (you can download tfswitch to help with switching your terraform version)
-* If you want to use the Aws lake formation setup, you need Terraform 0.13+  
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -116,6 +115,7 @@ module "emr" {
 
 # Use the code below if you want to add lake-formation setup using terraform.
 # You need to use terraform >=0.13 to use the following setup
+# If you have teraform 0.12, you will have to run the setup separately for each database.
 # Add the names of glue databases to the glue_db_list variable in local.
 
 # module "lakeformation_datalake_permissions" {
