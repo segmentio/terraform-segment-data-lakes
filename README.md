@@ -68,7 +68,7 @@ locals {
     # Find these in the Segment UI. Only need to set this once for all sources in
     # the workspace
     #  - Settings > General Settings
-    "Sauron Stage" = "9a2aceada4"
+    <Workspace Name> = "<Workspace ID>"
   }
 
   # Add the names of the glue databases you want to setup lake-formation for.
@@ -82,7 +82,7 @@ locals {
 # If you decide to skip this and use an existing bucket, ensure that you attach a 14 day expiration lifecycle policy to
 # your S3 bucket for the "segment-stage/" prefix.
 resource "aws_s3_bucket" "segment_datalake_s3" {
-  bucket = "hitisha-dev-lakeformation-test"
+  bucket = "my-first-segment-datalake"
 }
 
 # Creates the IAM Policy that allows Segment to access the necessary resources
@@ -94,7 +94,7 @@ module "iam" {
   # However, if you need to initialize multiple times across different Terraform
   # workspaces, this hook allows the generated IAM policies to be given unique
   # names.
-  suffix = "-lakeformation-test"
+  suffix = "-prod"
 
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.external_ids)}"
@@ -106,7 +106,7 @@ module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.6.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
-  subnet_id = "subnet-00f137e4f3a6f8356" # Replace this with the subnet ID you want the EMR cluster to run in.
+  subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
 
   # LEAVE THIS AS-IS
   iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
