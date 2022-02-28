@@ -58,7 +58,6 @@ provider "aws" {
   # Replace this with the AWS region your infrastructure is set up in.
   region = "us-west-2"
 
-  # Currently our modules require the older v2 AWS provider, as upgrading to v3 has notable breaking changes.
   version = "~> 4"
 }
 
@@ -122,7 +121,10 @@ module "emr" {
 #   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/lakeformation?ref=v0.6.0"
 #   for_each = local.glue_db_list
 #   name = each.key
-#   iam_roles = {datalake_role = "${module.iam.segment_datalake_iam_role_arn}", emr_instance_profile_role = "${module.iam.iam_emr_instance_profile}"}
+#   iam_roles = {
+#                datalake_role = "${module.iam.segment_datalake_iam_role_arn}", 
+#                emr_instance_profile_role = "${module.iam.iam_emr_instance_profile}"
+#   }
 # }
 ```
 
