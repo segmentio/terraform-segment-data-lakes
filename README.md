@@ -6,6 +6,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 
 * Authorized [AWS account](https://aws.amazon.com/account/).
 * Ability to run Terraform with your AWS Account. Terraform 0.11+ (you can download tfswitch to help with switching your terraform version)
+* If you want to use the Aws lake formation setup, you need Terraform 0.13+  
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -59,16 +60,20 @@ provider "aws" {
   region = "us-west-2"
 
   # Currently our modules require the older v2 AWS provider, as upgrading to v3 has notable breaking changes.
-  version = "~> 2"
+  version = "~> 4"
 }
 
 locals {
   external_ids = {
     # Find these in the Segment UI. Only need to set this once for all sources in
     # the workspace
-    #  - Settings > General Settings 
-    <Workspace Name> = "<Workspace ID>"
+    #  - Settings > General Settings
+    "Sauron Stage" = "9a2aceada4"
   }
+
+  # Add the names of the glue databases you want to setup lake-formation for.
+
+  # glue_db_list = toset([<db_names>])
 
 }
 
@@ -77,31 +82,19 @@ locals {
 # If you decide to skip this and use an existing bucket, ensure that you attach a 14 day expiration lifecycle policy to
 # your S3 bucket for the "segment-stage/" prefix.
 resource "aws_s3_bucket" "segment_datalake_s3" {
-  bucket = "my-first-segment-datalake"
-
-  lifecycle_rule {
-    enabled = true
-
-    prefix = "segment-stage/"
-
-    expiration {
-      days = 14
-    }
-
-    abort_incomplete_multipart_upload_days = 7
-  }
+  bucket = "hitisha-dev-lakeformation-test"
 }
 
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.5.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.6.0"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
   # workspaces, this hook allows the generated IAM policies to be given unique
   # names.
-  suffix = "-prod"
+  suffix = "-lakeformation-test"
 
   s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
   external_ids = "${values(local.external_ids)}"
@@ -110,16 +103,27 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.5.0"
+  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.6.0"
 
   s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
-  subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
+  subnet_id = "subnet-00f137e4f3a6f8356" # Replace this with the subnet ID you want the EMR cluster to run in.
 
   # LEAVE THIS AS-IS
   iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
   iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
   iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
 }
+
+# Use the code below if you want to add lake-formation setup using terraform.
+# You need to use terraform >=0.13 to use the following setup
+# Add the names of glue databases to the glue_db_list variable in local.
+
+# module "lakeformation_datalake_permissions" {
+#   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/lakeformation?ref=v0.6.0"
+#   for_each = local.glue_db_list
+#   name = each.key
+#   iam_roles = {datalake_role = "${module.iam.segment_datalake_iam_role_arn}", emr_instance_profile_role = "${module.iam.iam_emr_instance_profile}"}
+# }
 ```
 
 ## Provision Resources
