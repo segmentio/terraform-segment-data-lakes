@@ -122,7 +122,7 @@ module "emr" {
 #   for_each = local.glue_db_list
 #   name = each.key
 #   iam_roles = {
-#                datalake_role = module.iam.segment_datalake_iam_role_arn, 
+#                datalake_role             = module.iam.segment_datalake_iam_role_arn, 
 #                emr_instance_profile_role = module.iam.iam_emr_instance_profile
 #   }
 # }
