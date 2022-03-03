@@ -1,6 +1,6 @@
 variable "name" {
   description = "The name of the database."
-  type        = "string"
+  type        = string
 }
 
 variable "iam_roles" {
