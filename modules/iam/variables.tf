@@ -32,5 +32,5 @@ variable "tags" {
 }
 
 locals {
-  tags = merge(tomap("vendor", "segment"), var.tags)
+  tags = merge(tomap({"vendor"= "segment"}), var.tags)
 }
