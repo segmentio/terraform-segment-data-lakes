@@ -4,19 +4,19 @@
 resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_table_permission" {
   for_each = var.iam_roles
 
-  principal = each.value
+  principal   = each.value
   permissions = ["ALL"]
 
   table {
     database_name = var.name
-    wildcard = true
+    wildcard      = true
   }
 }
 
 resource "aws_lakeformation_permissions" "segment_datalake_lakeformation_database_permission" {
   for_each = var.iam_roles
 
-  principal = each.value
+  principal   = each.value
   permissions = ["ALL"]
 
   database {

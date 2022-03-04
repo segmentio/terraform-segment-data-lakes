@@ -5,7 +5,7 @@ Terraform modules which create AWS resources for a Segment Data Lake.
 # Prerequisites
 
 * Authorized [AWS account](https://aws.amazon.com/account/).
-* Ability to run Terraform with your AWS Account. Terraform 0.11+ (you can download tfswitch to help with switching your terraform version)
+* Ability to run Terraform with your AWS Account. Terraform 0.12+ (you can download tfswitch to help with switching your terraform version)
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
 
@@ -94,8 +94,8 @@ module "iam" {
   # names.
   suffix = "-prod"
 
-  s3_bucket    = "${aws_s3_bucket.segment_datalake_s3.id}"
-  external_ids = "${values(local.external_ids)}"
+  s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
+  external_ids = values(local.external_ids)
 }
 
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
@@ -103,13 +103,13 @@ module "iam" {
 module "emr" {
   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.6.0"
 
-  s3_bucket = "${aws_s3_bucket.segment_datalake_s3.id}"
+  s3_bucket = aws_s3_bucket.segment_datalake_s3.id
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
 
   # LEAVE THIS AS-IS
-  iam_emr_autoscaling_role = "${module.iam.iam_emr_autoscaling_role}"
-  iam_emr_service_role     = "${module.iam.iam_emr_service_role}"
-  iam_emr_instance_profile = "${module.iam.iam_emr_instance_profile}"
+  iam_emr_autoscaling_role = module.iam.iam_emr_autoscaling_role
+  iam_emr_service_role     = module.iam.iam_emr_service_role
+  iam_emr_instance_profile = module.iam.iam_emr_instance_profile
 }
 
 # Use the code below if you want to add lake-formation setup using terraform.
@@ -122,8 +122,8 @@ module "emr" {
 #   for_each = local.glue_db_list
 #   name = each.key
 #   iam_roles = {
-#                datalake_role = "${module.iam.segment_datalake_iam_role_arn}", 
-#                emr_instance_profile_role = "${module.iam.iam_emr_instance_profile}"
+#                datalake_role             = module.iam.segment_datalake_iam_role_arn, 
+#                emr_instance_profile_role = module.iam.iam_emr_instance_profile
 #   }
 # }
 ```
@@ -227,7 +227,7 @@ code to accomplish this.
 
 To develop in this repository, you'll want the following tools set up:
 
-* [Terraform](https://www.terraform.io/downloads.html), >= 0.12 (note that 0.12 is used to develop this module, even though 0.11 is supported)
+* [Terraform](https://www.terraform.io/downloads.html), >= 0.12 (note that 0.12 is used to develop this module, 0.11 is no longer supported)
 * [terraform-docs](https://github.com/segmentio/terraform-docs)
 * [tflint](https://github.com/terraform-linters/tflint)
 * [Ruby](https://www.ruby-lang.org/en/documentation/installation/), [>= 2.4.2](https://rvm.io)
