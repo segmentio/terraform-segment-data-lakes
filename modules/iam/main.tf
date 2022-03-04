@@ -124,6 +124,36 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
     effect = "Allow"
   }
 
+  # Explicitly deny Segment to modify IAM or sensible configuration from the Data Lake S3 bucket.
+  statement {
+    sid     = "DenyPrivilegedOperations"
+    actions = [
+      "s3:BypassGovernanceRetention",
+      "s3:CreateAccessPoint",
+      "s3:DeleteAccessPoint",
+      "s3:DeleteAccessPointPolicy",
+      "s3:DeleteBucket",
+      "s3:DeleteBucketPolicy",
+      "s3:PutAccessPointPolicy",
+      "s3:PutAccountPublicAccessBlock",
+      "s3:PutBucketAcl",
+      "s3:PutBucketLogging",
+      "s3:PutBucketPolicy",
+      "s3:PutBucketPublicAccessBlock",
+      "s3:PutBucketVersioning",
+      "s3:PutBucketWebsite",
+      "s3:PutEncryptionConfiguration",
+      "s3:PutReplicationConfiguration"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket}/*",
+      "arn:aws:s3:::${var.s3_bucket}",
+    ]
+
+    effect = "Deny"
+  }
+
   # Allows Segment to access Athena.
   statement {
     actions = [
@@ -181,84 +211,145 @@ EOF
   tags = "${local.tags}"
 }
 
-resource "aws_iam_role_policy" "segment_emr_service_policy" {
-  name = "SegmentEMRServicePolicy${var.suffix}"
-  role = "${aws_iam_role.segment_emr_service_role.id}"
-
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [{
-        "Effect": "Allow",
-        "Resource": "*",
-        "Action": [
-                "ec2:AuthorizeSecurityGroupEgress",
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:CancelSpotInstanceRequests",
-                "ec2:CreateNetworkInterface",
-                "ec2:CreateSecurityGroup",
-                "ec2:CreateTags",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteSecurityGroup",
-                "ec2:DeleteTags",
-                "ec2:DescribeAvailabilityZones",
-                "ec2:DescribeAccountAttributes",
-                "ec2:DescribeDhcpOptions",
-                "ec2:DescribeImages",
-                "ec2:DescribeInstanceStatus",
-                "ec2:DescribeInstances",
-                "ec2:DescribeKeyPairs",
-                "ec2:DescribeNetworkAcls",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribePrefixLists",
-                "ec2:DescribeRouteTables",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSpotInstanceRequests",
-                "ec2:DescribeSpotPriceHistory",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeTags",
-                "ec2:DescribeVpcAttribute",
-                "ec2:DescribeVpcEndpoints",
-                "ec2:DescribeVpcEndpointServices",
-                "ec2:DescribeVpcs",
-                "ec2:DetachNetworkInterface",
-                "ec2:ModifyImageAttribute",
-                "ec2:ModifyInstanceAttribute",
-                "ec2:RequestSpotInstances",
-                "ec2:RevokeSecurityGroupEgress",
-                "ec2:RunInstances",
-                "ec2:TerminateInstances",
-                "ec2:DeleteVolume",
-                "ec2:DescribeVolumeStatus",
-                "ec2:DescribeVolumes",
-                "ec2:DetachVolume",
-                "iam:GetRole",
-                "iam:GetRolePolicy",
-                "iam:ListInstanceProfiles",
-                "iam:ListRolePolicies",
-                "iam:PassRole",
-                "s3:CreateBucket",
-                "s3:Get*",
-                "s3:List*",
-                "sdb:BatchPutAttributes",
-                "sdb:Select",
-                "sqs:CreateQueue",
-                "sqs:Delete*",
-                "sqs:GetQueue*",
-                "sqs:PurgeQueue",
-                "sqs:ReceiveMessage",
-                "cloudwatch:PutMetricAlarm",
-                "cloudwatch:DescribeAlarms",
-                "cloudwatch:DeleteAlarms",
-                "application-autoscaling:RegisterScalableTarget",
-                "application-autoscaling:DeregisterScalableTarget",
-                "application-autoscaling:PutScalingPolicy",
-                "application-autoscaling:DeleteScalingPolicy",
-                "application-autoscaling:Describe*"
-            ]
-    }]
+resource "aws_iam_policy" "segment_emr_service_role_policy" {
+  name   = "SegmentEMRServicePolicy${var.suffix}"
+  path   = "/"
+  policy = "${data.aws_iam_policy_document.segment_emr_service_policy_document.json}"
 }
-EOF
+
+data "aws_iam_policy_document" "segment_emr_service_policy_document" {
+  statement {
+    sid       = "AllowSegmentEMRServicePolicy${var.suffix}"
+    effect    = "Allow"
+    actions   = [
+      "ec2:AuthorizeSecurityGroupEgress",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:CancelSpotInstanceRequests",
+      "ec2:CreateNetworkInterface",
+      "ec2:CreateSecurityGroup",
+      "ec2:CreateTags",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DeleteSecurityGroup",
+      "ec2:DeleteTags",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeDhcpOptions",
+      "ec2:DescribeImages",
+      "ec2:DescribeInstanceStatus",
+      "ec2:DescribeInstances",
+      "ec2:DescribeKeyPairs",
+      "ec2:DescribeNetworkAcls",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribePrefixLists",
+      "ec2:DescribeRouteTables",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSpotInstanceRequests",
+      "ec2:DescribeSpotPriceHistory",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeTags",
+      "ec2:DescribeVpcAttribute",
+      "ec2:DescribeVpcEndpoints",
+      "ec2:DescribeVpcEndpointServices",
+      "ec2:DescribeVpcs",
+      "ec2:DetachNetworkInterface",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:RequestSpotInstances",
+      "ec2:RevokeSecurityGroupEgress",
+      "ec2:RunInstances",
+      //      "ec2:TerminateInstances",
+      //      "ec2:DeleteVolume",
+      "ec2:DescribeVolumeStatus",
+      "ec2:DescribeVolumes",
+      //      "ec2:DetachVolume",
+      "iam:GetRole",
+      "iam:GetRolePolicy",
+      "iam:ListInstanceProfiles",
+      "iam:ListRolePolicies",
+      "iam:PassRole",
+      "s3:CreateBucket",
+      //      "s3:Get*",
+      //      "s3:List*",
+      "sdb:BatchPutAttributes",
+      "sdb:Select",
+      //      "sqs:CreateQueue",
+      //      "sqs:Delete*",
+      //      "sqs:GetQueue*",
+      //      "sqs:PurgeQueue",
+      //      "sqs:ReceiveMessage",
+      "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:DeleteAlarms",
+      "application-autoscaling:RegisterScalableTarget",
+      "application-autoscaling:DeregisterScalableTarget",
+      "application-autoscaling:PutScalingPolicy",
+      "application-autoscaling:DeleteScalingPolicy",
+      "application-autoscaling:Describe*"
+    ]
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    actions   = [
+      "ec2:DeleteVolume",
+      "ec2:TerminateInstances",
+      "ec2:DetachVolume",
+    ]
+    resources = [
+      "*"
+    ]
+    # Check that were created by Segment
+    //    condition {
+    //      test     = ""
+    //      values   = []
+    //      variable = ""
+    //    }
+    effect    = "Allow"
+  }
+
+  statement {
+    actions   = [
+      "sqs:CreateQueue",
+      "sqs:Delete*",
+      "sqs:GetQueue*",
+      "sqs:PurgeQueue",
+      "sqs:ReceiveMessage",
+    ]
+    resources = [
+      "*"
+    ]
+    # Check that were created by Segment
+    //    condition {
+    //      test     = ""
+    //      values   = []
+    //      variable = ""
+    //    }
+    effect    = "Allow"
+  }
+
+  statement {
+    actions   = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+    resources = [
+      "*"
+    ]
+    # Check that S3 was created by Segment
+    //    condition {
+    //      test     = ""
+    //      values   = []
+    //      variable = ""
+    //    }
+    effect    = "Allow"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "segment_emr_service_role_policy_attachment" {
+  role       = "${aws_iam_role.segment_emr_service_role.name}"
+  policy_arn = "${aws_iam_policy.segment_emr_service_role_policy.arn}"
 }
 
 # IAM Role for EC2 Instance Profile
@@ -293,75 +384,82 @@ resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
   name = "SegmentEMRInstanceProfilePolicy${var.suffix}"
   role = "${aws_iam_role.segment_emr_instance_profile_role.id}"
 
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [{
-        "Effect": "Allow",
-        "Resource": "*",
-        "Action": [
-            "cloudwatch:*",
-            "ec2:Describe*",
-            "elasticmapreduce:Describe*",
-            "sdb:*"
-        ]
-    },
-    {
-            "Effect": "Allow",
-            "Action": [
-                "s3:AbortMultipartUpload",
-                "s3:CreateBucket",
-                "s3:DeleteObject",
-                "s3:GetBucketVersioning",
-                "s3:GetObject",
-                "s3:GetObjectTagging",
-                "s3:GetObjectVersion",
-                "s3:ListBucket",
-                "s3:ListBucketMultipartUploads",
-                "s3:ListBucketVersions",
-                "s3:ListMultipartUploadParts",
-                "s3:PutBucketVersioning",
-                "s3:PutObject",
-                "s3:PutObjectTagging"
-            ],
-            "Resource": [
-                "arn:aws:s3:::${var.s3_bucket}",
-                "arn:aws:s3:::${var.s3_bucket}/*"
-            ]
-        },
-    {
-            "Effect": "Allow",
-            "Resource": "*",
-            "Action": [
-                "glue:CreateDatabase",
-                "glue:UpdateDatabase",
-                "glue:DeleteDatabase",
-                "glue:GetDatabase",
-                "glue:GetDatabases",
-                "glue:CreateTable",
-                "glue:UpdateTable",
-                "glue:DeleteTable",
-                "glue:GetTable",
-                "glue:GetTables",
-                "glue:GetTableVersions",
-                "glue:CreatePartition",
-                "glue:BatchCreatePartition",
-                "glue:UpdatePartition",
-                "glue:DeletePartition",
-                "glue:BatchDeletePartition",
-                "glue:GetPartition",
-                "glue:GetPartitions",
-                "glue:BatchGetPartition",
-                "glue:CreateUserDefinedFunction",
-                "glue:UpdateUserDefinedFunction",
-                "glue:DeleteUserDefinedFunction",
-                "glue:GetUserDefinedFunction",
-                "glue:GetUserDefinedFunctions"
-            ]
-        }
-]
+  policy = "${data.aws_iam_policy_document.segment_emr_instance_profile_policy_document.json}"
 }
-EOF
+
+data "aws_iam_policy_document" "segment_emr_instance_profile_policy_document" {
+  statement {
+    resources = [
+      "*"
+    ]
+    actions   = [
+      "glue:CreateDatabase",
+      "glue:UpdateDatabase",
+      "glue:DeleteDatabase",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:CreateTable",
+      "glue:UpdateTable",
+      "glue:DeleteTable",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetTableVersions",
+      "glue:CreatePartition",
+      "glue:BatchCreatePartition",
+      "glue:UpdatePartition",
+      "glue:DeletePartition",
+      "glue:BatchDeletePartition",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:BatchGetPartition",
+      "glue:CreateUserDefinedFunction",
+      "glue:UpdateUserDefinedFunction",
+      "glue:DeleteUserDefinedFunction",
+      "glue:GetUserDefinedFunction",
+      "glue:GetUserDefinedFunctions"
+    ]
+    effect    = "Allow"
+
+  }
+
+  statement {
+    resources = [
+      "*"
+    ]
+
+    actions = [
+      "cloudwatch:*",
+      "ec2:Describe*",
+      "elasticmapreduce:Describe*",
+      "sdb:*"
+    ]
+    effect  = "Allow"
+  }
+
+  statement {
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket}",
+      "arn:aws:s3:::${var.s3_bucket}/*"
+    ]
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:CreateBucket",
+      "s3:DeleteObject",
+      "s3:GetBucketVersioning",
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListBucketVersions",
+      "s3:ListMultipartUploadParts",
+      "s3:PutBucketVersioning",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+    effect  = "Allow"
+  }
 }
 
 # IAM Role for EMR Autoscaling role

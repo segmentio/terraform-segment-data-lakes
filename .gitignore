@@ -127,3 +127,6 @@ override.tf.json
 # End of https://www.gitignore.io/api/osx,ruby,terraform,visualstudiocode
 
 .kitchen/
+
+## IDEA based IDEs
+.idea
