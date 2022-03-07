@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "segment_policy_doc" {
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::${var.data_account}:root"
+      identifiers = ["arn:aws:iam::${var.data_account}:root"]
     }
 
     resources = [
@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "segment_policy_doc" {
     effect = "Allow"
     principals {
       type = "AWS"
-      identifiers = "arn:aws:iam::107630771604:user/s3-copy"
+      identifiers = ["arn:aws:iam::107630771604:user/s3-copy"]
     }
     actions =  ["S3:PutObject"]
     resources = ["arn:aws:s3:::${var.s3_bucket}/*"]
