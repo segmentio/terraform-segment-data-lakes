@@ -9,6 +9,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "data_account" {
+  description = "aws account id for data account"
+  type = "string"
+} 
+
 locals {
   tags = "${merge(map("vendor", "segment"), var.tags)}"
 }
