@@ -51,6 +51,7 @@ module "s3_bucket" {
 
   tags = local.tags
 
-  policy = data.aws_iam_policy_document.segment_policy_doc.json
   
+  policy = data.aws_iam_policy_document.segment_policy_doc.json
+  attach_policy =true
 }
