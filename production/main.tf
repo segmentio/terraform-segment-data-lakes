@@ -54,6 +54,7 @@ module "iam" {
   s3_bucket    = local.s3_bucket_name
   external_ids = local.external_ids
   tags = local.default_tags
+  data_account = 409386690817
 
 }
 
