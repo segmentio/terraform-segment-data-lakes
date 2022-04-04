@@ -102,5 +102,5 @@ variable "task_instance_max_count" {
 }
 
 locals {
-  tags = merge(map("vendor", "segment"), var.tags)
+  tags = merge(tomap("vendor", "segment"), var.tags)
 }
