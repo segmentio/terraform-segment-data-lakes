@@ -46,7 +46,7 @@ module "s3_bucket" {
   source    = "../modules/s3_bucket"
   s3_bucket = local.s3_bucket_name
   tags = local.default_tags
-  data_account = 409386690817
+  data_account = 787212289020
 }
 
 module "iam" {
