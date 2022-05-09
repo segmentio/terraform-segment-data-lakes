@@ -37,6 +37,7 @@ plan_terraform_prod:
     VAULT_TOKEN: $VAULT_TOKEN_PROD
   tags:
     - production
+  rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_PIPELINE_SOURCE == "trigger"
 
