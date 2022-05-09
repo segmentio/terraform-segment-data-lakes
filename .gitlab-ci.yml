@@ -37,8 +37,8 @@ plan_terraform_prod:
     VAULT_TOKEN: $VAULT_TOKEN_PROD
   tags:
     - production
-  only:
-    - master
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "trigger"
 
 .apply_terraform: &apply_terraform
   stage: apply_terraform
@@ -60,7 +60,9 @@ apply_terraform_dev:
     VAULT_TOKEN: $VAULT_TOKEN_DEV
   tags:
     - development
-  when: manual
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+    - when: manual
   allow_failure: false
 
 apply_terraform_prod:
@@ -73,7 +75,7 @@ apply_terraform_prod:
     VAULT_TOKEN: $VAULT_TOKEN_PROD
   tags:
     - production
-  only:
-    - master
-  when: manual
-  allow_failure: false
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "trigger"
