@@ -4,7 +4,9 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
   name               = "SegmentDataLakeRole${var.suffix}"
   description        = "IAM Role used by Segment"
   assume_role_policy = data.aws_iam_policy_document.segment_data_lake_assume_role_policy_document.json
-  tags               = local.tags
+  tags = merge(local.tags, {
+    yor_trace = "ca692ea7-52ba-4038-a09a-29febff56de5"
+  })
 }
 
 # Policy attached to the IAM role.
@@ -44,6 +46,9 @@ resource "aws_iam_policy" "segment_data_lake_policy" {
   path        = "/"
   description = "Gives access to resources in your Data Lake"
   policy      = data.aws_iam_policy_document.segment_data_lake_policy_document.json
+  tags = {
+    yor_trace = "8dd8df81-af9d-47fb-bdc7-a8efcd5ca6ea"
+  }
 }
 
 data "aws_iam_policy_document" "segment_data_lake_policy_document" {
@@ -178,7 +183,9 @@ resource "aws_iam_role" "segment_emr_service_role" {
 }
 EOF
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    yor_trace = "12287f9f-6305-432e-9187-6c09f33a0b10"
+  })
 }
 
 resource "aws_iam_role_policy" "segment_emr_service_policy" {
@@ -281,12 +288,17 @@ resource "aws_iam_role" "segment_emr_instance_profile_role" {
 }
 EOF
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    yor_trace = "2a7cf725-8ffc-423a-9fd0-1a8a344f5d4e"
+  })
 }
 
 resource "aws_iam_instance_profile" "segment_emr_instance_profile" {
   name = "SegmentEMRInstanceProfile${var.suffix}"
   role = aws_iam_role.segment_emr_instance_profile_role.name
+  tags = {
+    yor_trace = "7e0b784e-d9ff-4f8c-989a-c49159cd0203"
+  }
 }
 
 resource "aws_iam_role_policy" "segment_emr_instance_profile_policy" {
@@ -386,7 +398,9 @@ resource "aws_iam_role" "segment_emr_autoscaling_role" {
 }
 EOF
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    yor_trace = "c667d8c6-a7cd-475a-bf8d-3aa9cfff487a"
+  })
 }
 
 resource "aws_iam_role_policy" "segmnet_emr_autoscaling_policy" {

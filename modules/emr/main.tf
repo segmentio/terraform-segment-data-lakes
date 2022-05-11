@@ -111,7 +111,9 @@ EOF
   ]
 EOF
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    yor_trace = "db9e2993-5059-46da-9d1c-98252d6fc3d7"
+  })
 }
 
 resource "aws_emr_instance_group" "task" {
