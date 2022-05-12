@@ -7,7 +7,6 @@ stages:
   script:
     - cd ${TF_ENVIRONMENT}
     - terraform init -no-color
-    - terraform taint module.segment.null_resource.segment-setup
     - terraform plan -no-color -out=tfplan
 
   artifacts:
@@ -39,6 +38,7 @@ plan_terraform_prod:
   script:
     - cd ${TF_ENVIRONMENT}
     - terraform init -no-color
+    - terraform taint module.segment.null_resource.segment-setup
     - terraform plan -no-color -out=tfplan
   tags:
     - production
