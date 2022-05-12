@@ -74,6 +74,10 @@ apply_terraform_prod:
     TF_ENVIRONMENT: production
     VAULT_ADDR: $VAULT_ADDR_PROD
     VAULT_TOKEN: $VAULT_TOKEN_PROD
+  script:
+    - cd ${TF_ENVIRONMENT}
+    - terraform taint module.segment.null_resource.segment-setup
+    - terraform apply -no-color tfplan
   tags:
     - production
   rules:
