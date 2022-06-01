@@ -229,7 +229,7 @@ To develop in this repository, you'll want the following tools set up:
 
 * [Terraform](https://www.terraform.io/downloads.html), >= 0.12 (note that 0.12 is used to develop this module, 0.11 is no longer supported)
 * [terraform-docs](https://github.com/segmentio/terraform-docs)
-* [tflint](https://github.com/terraform-linters/tflint)
+* [tflint](https://github.com/terraform-linters/tflint), 0.15.x - 0.26.x
 * [Ruby](https://www.ruby-lang.org/en/documentation/installation/), [>= 2.4.2](https://rvm.io)
 * [Bundler](https://bundler.io)
 
