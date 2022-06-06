@@ -62,19 +62,19 @@ variable "iam_emr_instance_profile" {
 variable "master_instance_type" {
   description = "EC2 Instance Type for Master"
   type        = string
-  default     = "c5.xlarge"
+  default     = "c5.2xlarge" #8vCPUS,16gRAM
 }
 
 variable "core_instance_type" {
   description = "EC2 Instance Type for Core Nodes"
   type        = string
-  default     = "c5.xlarge"
+  default     = "c5.2xlarge" #8vCPUS,16gRAM
 }
 
 variable "task_instance_type" {
   description = "EC2 Instance Type for Task Nodes"
   type        = string
-  default     = "c5.xlarge"
+  default     = "c5.2xlarge" #8vCPUS,16gRAM
 }
 
 variable "core_instance_count" {
