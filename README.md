@@ -123,7 +123,7 @@ module "emr" {
 #   name = each.key
 #   iam_roles = {
 #                datalake_role             = module.iam.segment_datalake_iam_role_arn, 
-#                emr_instance_profile_role = module.iam.iam_emr_instance_profile
+#                emr_instance_profile_role = module.iam.iam_emr_instance_profile_role_arn
 #   }
 # }
 ```
