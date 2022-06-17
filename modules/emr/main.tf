@@ -120,6 +120,12 @@ resource "aws_emr_instance_group" "task" {
   instance_type  = var.task_instance_type
   instance_count = var.task_instance_count
 
+	lifecycle {
+    ignore_changes = [
+      instance_count # with autoscaling, the number of instances changes over time
+    ]
+  }
+
   ebs_config {
     size                 = "64"
     type                 = "gp2"
