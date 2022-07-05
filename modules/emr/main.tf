@@ -106,7 +106,19 @@ EOF
     {
       "Classification": "spark-hive-site",
       "Properties": {
-        "hive.metastore.client.factory.class":"com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"      }
+        "hive.metastore.client.factory.class":"com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+	  }
+    },
+	{
+      "Classification": "yarn-site",
+      "Properties": {
+        "yarn.log-aggregation.retain-seconds": "259200"
+    },
+	{
+      "Classification": "yarn-site",
+      "Properties": {
+        "yarn.nodemanager.log-aggregation.compression-type": "gz"
+    }
     }
   ]
 EOF
