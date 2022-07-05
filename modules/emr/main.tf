@@ -112,7 +112,12 @@ EOF
       "Classification": "yarn-site",
       "Properties": {
         "yarn.log-aggregation.retain-seconds": "259200"
-      }
+    },
+	{
+      "Classification": "yarn-site",
+      "Properties": {
+        "yarn.nodemanager.log-aggregation.compression-type": "gz"
+    }
     }
   ]
 EOF
