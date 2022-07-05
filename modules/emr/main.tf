@@ -35,7 +35,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     name           = "core_group"
 
     ebs_config {
-      size                 = "64"
+      size                 = "128"
       type                 = "gp2"
       volumes_per_instance = 1
     }
