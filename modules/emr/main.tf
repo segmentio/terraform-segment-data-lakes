@@ -97,25 +97,25 @@ EOF
 
   configurations_json = <<EOF
   [
-   {
-      "Classification": "hive-site",
-      "Properties": {
-         "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
-      }
-   },
-   {
-      "Classification": "spark-hive-site",
-      "Properties": {
-         "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
-      }
-   },
-   {
-      "Classification": "yarn-site",
-      "Properties": {
-         "yarn.log-aggregation.retain-seconds": "259200",
-		 "yarn.nodemanager.log-aggregation.compression-type": "gz"
-      }
-   }
+  {
+    "Classification": "hive-site",
+    "Properties": {
+      "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+    }
+  },
+  {
+    "Classification": "spark-hive-site",
+    "Properties": {
+      "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+    }
+  },
+  {
+    "Classification": "yarn-site",
+    "Properties": {
+      "yarn.log-aggregation.retain-seconds": "259200",
+      "yarn.nodemanager.log-aggregation.compression-type": "gz"
+    }
+  }
 ]
 EOF
 
