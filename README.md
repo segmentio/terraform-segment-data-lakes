@@ -1,10 +1,10 @@
-# terraform-aws-data-lake
+# terraform-data-lake
 
-Terraform modules which create AWS resources for a Segment Data Lake.
+Terraform modules which create AWS and Azure resources for a Segment Data Lake as required.
 
 # Prerequisites
 
-* Authorized [AWS account](https://aws.amazon.com/account/).
+* Authorized [AWS account](https://aws.amazon.com/account/) or [Azure account]().
 * Ability to run Terraform with your AWS Account. Terraform 0.12+ (you can download tfswitch to help with switching your terraform version)
 * A subnet within a VPC for the EMR cluster to run in.
 * An [S3 Bucket](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) for Segment to load data into. You can create a new one just for this, or re-use an existing one you already have.
@@ -19,9 +19,16 @@ You'll need to provide a subnet within a VPC for the EMR to cluster to run in. H
 # Modules
 
 The repository is split into multiple modules, and each can be used independently:
+### For AWS:
 * [iam](/modules/iam) - IAM roles that give Segment access to your AWS resources.
 * [emr](/modules/emr) - EMR cluster that Segment can submit jobs to load events into your Data Lake.
 * [glue](/modules/glue) - Glue tables that Segment can write metadata to.
+* [lakeformation](modules/lakeformation) (optional) - LakeFormation Permissions can be added to your glue database. 
+### For Azure:
+* [databricks](modules/databricks) - Databricks cluster to which Segment can submit jobs to load events into your Data Lake.
+* [mysql](modules/mysql) - MySql Database to which Segment can get the data added to.
+* [serviceprincipal](modules/serviceprincipal) - Service principle password using which Segment can access the databricks cluster.
+* [StorageAccount](modules/StorageAccount) - Storage Account that Segment can write metadata to.
 
 # Usage
 
@@ -48,6 +55,7 @@ terraform help
 mkdir segment-datalakes-tf
 ```
 * Create `main.tf` file
+  ### For AWS Datalake:
     * Update the `external_ids` variable in the `locals` section to the workspace ID. This will allow all sources in the workspace to be synced to the Data Lake without any extra setup.
       * **Note - Existing users** may be using the `sourceID` here instead of the `workspaceID`, which was the previous configuration. Setting this value as the `sourceID` is still supported for existing users for backwards compatibility. Follow instructions [here](#Using-workspaceID-as-the-externalID) to migrate to `workspaceID`. This will ensure you do not need to update this value for each source you want to add.
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
@@ -86,7 +94,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/iam?ref=v0.6.0"
+  source = "git@github.com:segmentio/terraform-data-lake//modules/iam?ref=v0.6.0"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
@@ -101,7 +109,7 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-aws-data-lake//modules/emr?ref=v0.6.0"
+  source = "git@github.com:segmentio/terraform-data-lake//modules/emr?ref=v0.6.0"
 
   s3_bucket = aws_s3_bucket.segment_datalake_s3.id
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
@@ -118,7 +126,7 @@ module "emr" {
 # Add the names of glue databases to the glue_db_list variable in local.
 
 # module "lakeformation_datalake_permissions" {
-#   source = "git@github.com:segmentio/terraform-aws-data-lake//modules/lakeformation?ref=v0.6.0"
+#   source = "git@github.com:segmentio/terraform-data-lake//modules/lakeformation?ref=v0.6.0"
 #   for_each = local.glue_db_list
 #   name = each.key
 #   iam_roles = {
@@ -126,6 +134,121 @@ module "emr" {
 #                emr_instance_profile_role = module.iam.iam_emr_instance_profile
 #   }
 # }
+```
+  ### For Azure Datalake
+
+```
+terraform {
+  required_providers {
+    databricks = {
+      source  = "databrickslabs/databricks"
+    }
+
+    azurerm = "~> 2"
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+
+locals {
+  region         = "my-region"
+  resource_group = "my-resource-group"
+
+  storage_account = "my-storage-account"
+  container_name  = "my-container-name"
+
+  key_vault_name = "me-key-vault"
+
+  server_name = "my-server-db"
+  db_name     = "my-database"
+  db_password = "my-password"
+  db_admin    = "my-admin"
+
+  start_ip          = "0.0.0.0"
+  end_ip            = "255.255.255.255"
+  sku               = "premium"
+  service_principal_name = "my-service-principle"
+
+  databricks_workspace_url = "my-databricks-workspace"
+  cluster_name   = "my-cluster"
+  tenant_id      = "my-tenant-id"
+}
+
+resource "azurerm_resource_group" "segment_datalake" {
+  name     = local.resource_group
+  location = local.region
+}
+
+resource "azurerm_key_vault" "segment_vault" {
+  name                     = local.key_vault_name
+  location                 = azurerm_resource_group.segment_datalake.location
+  resource_group_name      = azurerm_resource_group.segment_datalake.name
+  tenant_id                = local.tenant_id
+  soft_delete_enabled      = false
+  purge_protection_enabled = false
+  sku_name                 = "standard"
+}
+
+resource "azurerm_key_vault_access_policy" "segment_vault" {
+  key_vault_id       = azurerm_key_vault.segment_vault.id
+  tenant_id          = data.azurerm_client_config.current.tenant_id
+  object_id          = data.azurerm_client_config.current.object_id
+  secret_permissions = ["delete", "get", "list", "set"]
+}
+
+
+module "segment_data_lake_storage_account" {
+  source = "git@github.com:segmentio/terraform-data-lake//modules/storageaccount"
+
+  name           = local.storage_account
+  region         = local.region
+  resource_group_name = azurerm_resource_group.segment_datalake.name
+  container_name = local.container_name
+}
+
+module "segment_data_lake_mysql" {
+  source = "git@github.com:segmentio/terraform-data-lake//modules/mysql"
+
+
+  region = local.region
+  server_name = local.server_name
+  resource_group_name = azurerm_resource_group.segment_datalake.name
+  db_name     = local.db_name
+  db_admin    = local.db_admin
+  password   =  local.db_password
+
+}
+
+module "segment_data_lake_service_principal" {
+  source = "git@github.com:segmentio/terraform-data-lake//modules/serviceprincipal"
+
+  app_name = local.service_principal_name
+
+}
+
+module "segment_data_lake_databricks_cluster" {
+  source = "git@github.com:segmentio/terraform-data-lake//modules/databricks"
+  workspace_url = local.databricks_workspace_url
+
+  cluster_name             = local.cluster_name
+  storage_account_name     = local.storage_account
+  container_name           = local.container_name
+  mysql_dbname             = module.segment_data_lake_mysql.mysql_dbname
+  mysql_password           = module.segment_data_lake_mysql.mysql_password
+  mysql_server_url         = module.segment_data_lake_mysql.mysql_server_fqdn
+  mysql_username           = module.segment_data_lake_mysql.mysql_username
+  service_principal_id     = module.segment_data_lake_service_principal.client_id
+  service_principal_secret = module.segment_data_lake_service_principal.spsecret
+  keyvault_dns_name        = azurerm_key_vault.segment_vault.vault_uri
+  keyvault_resource_id     = azurerm_key_vault.segment_vault.id
+  tenant_id                = local.tenant_id
+
+}
 ```
 
 ## Provision Resources
