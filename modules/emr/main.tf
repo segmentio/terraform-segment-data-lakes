@@ -131,6 +131,8 @@ resource "aws_emr_instance_group" "task" {
   instance_type  = var.task_instance_type
   instance_count = var.task_instance_count
 
+  bid_price = "0.3"
+
   ebs_config {
     size                 = "64"
     type                 = "gp2"
