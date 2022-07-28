@@ -13,10 +13,10 @@ Terraform modules which create AWS and Azure resources for a Segment Data Lake a
 # Modules
 
 The repository is split into multiple modules, and each can be used independently:
-* [databricks](azure_datalake/modules/databricks) - Databricks cluster to which Segment can submit jobs to load events into your Data Lake.
-* [mysql](azure_datalake/modules/mysql) - MySql Database to which Segment can get the data added to.
-* [serviceprincipal](azure_datalake/modules/serviceprincipal) - Service principle password using which Segment can access the databricks cluster.
-* [StorageAccount](azure_datalake/modules/StorageAccount) - Storage Account that Segment can write metadata to.
+* [databricks](/azure_datalake/modules/databricks) - Databricks cluster to which Segment can submit jobs to load events into your Data Lake.
+* [mysql](/azure_datalake/modules/mysql) - MySql Database to which Segment can get the data added to.
+* [serviceprincipal](/azure_datalake/modules/serviceprincipal) - Service principle password using which Segment can access the databricks cluster.
+* [StorageAccount](/azure_datalake/modules/StorageAccount) - Storage Account that Segment can write metadata to.
 
 # Usage
 
