@@ -110,7 +110,7 @@ resource "azurerm_key_vault_access_policy" "segment_vault" {
 
 
 module "segment_data_lake_storage_account" {
-  source = "git@github.com:segmentio/terraform-data-lake//azure_datalake/modules/storageaccount"
+  source = "git@github.com:segmentio/terraform-segment-data-lake//azure_datalake/modules/storageaccount?ref=v0.8.0"
 
   name           = local.storage_account
   region         = local.region
@@ -119,7 +119,7 @@ module "segment_data_lake_storage_account" {
 }
 
 module "segment_data_lake_mysql" {
-  source = "git@github.com:segmentio/terraform-data-lake//azure_datalake/modules/mysql"
+  source = "git@github.com:segmentio/terraform-segment-data-lake//azure_datalake/modules/mysql?ref=v0.8.0"
 
 
   region = local.region
@@ -132,14 +132,14 @@ module "segment_data_lake_mysql" {
 }
 
 module "segment_data_lake_service_principal" {
-  source = "git@github.com:segmentio/terraform-data-lake//azure_datalake/modules/serviceprincipal"
+  source = "git@github.com:segmentio/terraform-segment-data-lake//azure_datalake/modules/serviceprincipal?ref=v0.8.0"
 
   app_name = local.service_principal_name
 
 }
 
 module "segment_data_lake_databricks_cluster" {
-  source = "git@github.com:segmentio/terraform-data-lake//azure_datalake/modules/databricks"
+  source = "git@github.com:segmentio/terraform-segment-data-lake//azure_datalake/modules/databricks?ref=v0.8.0"
   workspace_url = local.databricks_workspace_url
 
   cluster_name             = local.cluster_name
