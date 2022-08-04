@@ -40,7 +40,7 @@ resource "databricks_cluster" "segment_databricks_cluster" {
     "spark.hadoop.fs.azure.account.oauth2.client.id.${var.storage_account_name}.dfs.core.windows.net": var.service_principal_id,
 
     "spark.hadoop.javax.jdo.option.ConnectionDriverName": "org.mariadb.jdbc.Driver",
-    "spark.hadoop.javax.jdo.option.ConnectionURL": "jdbc:mysql://${var.mysql_server_url}:3306/${var.mysql_dbname}?useSSL=true&requireSSL=false",
+    "spark.hadoop.javax.jdo.option.ConnectionURL": "jdbc:mysql://${var.mysql_server_url}:3306/${var.mysql_dbname}?useSSL=true&requireSSL=true&enabledSslProtocolSuites=TLSv1.2",
     "spark.hadoop.javax.jdo.option.ConnectionUserName": var.mysql_username,
     "spark.hadoop.javax.jdo.option.ConnectionPassword": var.mysql_password
   }
