@@ -10,7 +10,7 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
 # https://www.terraform.io/docs/providers/aws/d/region.html
 data "aws_region" "current" {}
 
-region = "${var.vpc-name}-${data.aws_region.current.name}-Bastion-Role"
+region = "${data.aws_region.current.name}"
 
 # Policy attached to the IAM role.
 # https://www.terraform.io/docs/providers/aws/d/iam_policy_document.html
@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = var.segment_aws_accounts
+      identifiers = "${region!= "us-west-2" ? var.segment_eu_aws_accounts : var.segment_aws_accounts}"
     }
 
     effect = "Allow"
