@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = "${region!= "us-west-2" ? var.segment_eu_aws_accounts : var.segment_aws_accounts}"
+      identifiers = "${region!= "eu-west-1" ? var.segment_aws_accounts : var.segment_eu_aws_accounts}"
     }
 
     effect = "Allow"
