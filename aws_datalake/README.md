@@ -97,7 +97,7 @@ module "iam" {
   suffix = "-prod"
   
   # segment_region is an optional field that allows you to setup Data Lakes in eu-west-1. The default will be us-west-2
-  segment_region = "us-west-2
+  segment_region = "us-west-2"
   
   s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
   external_ids = values(local.external_ids)
