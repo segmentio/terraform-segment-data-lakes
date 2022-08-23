@@ -88,7 +88,7 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-segment-data-lake//aws_datalake/modules/iam?ref=v0.8.0"
+  source = "git@github.com:segmentio/terraform-segment-data-lakes//aws_datalake/modules/iam?ref=v0.8.0"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
@@ -97,7 +97,7 @@ module "iam" {
   suffix = "-prod"
   
   # segment_region is an optional field that allows you to setup Data Lakes in eu-west-1. The default will be us-west-2
-  segment_region = "us-west-2"
+  # segment_region = "us-west-2"
   
   s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
   external_ids = values(local.external_ids)
