@@ -96,7 +96,8 @@ module "iam" {
   # names.
   suffix = "-prod"
   
-  # segment_region is an optional field which helps you to specify the region for your datalake. The default is us_west_2
+  # segment_region is an optional field which helps you to specify specify the region if you have configured Segment in a different region. See 
+  # https://segment.com/docs/guides/regional-segment/ for more details
   # segment_region = "us-west-2"
   
   s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
