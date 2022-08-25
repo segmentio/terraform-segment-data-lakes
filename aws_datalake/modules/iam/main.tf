@@ -7,6 +7,9 @@ resource "aws_iam_role" "segment_data_lake_iam_role" {
   tags               = local.tags
 }
 
+# https://www.terraform.io/docs/providers/aws/d/region.html
+data "aws_region" "current" {}
+
 # Policy attached to the IAM role.
 # https://www.terraform.io/docs/providers/aws/d/iam_policy_document.html
 data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
@@ -20,7 +23,7 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = var.segment_aws_accounts
+      identifiers = "${var.segment_region!= "eu-west-1" ? var.segment_aws_accounts : var.segment_eu_aws_accounts}"
     }
 
     effect = "Allow"
@@ -35,9 +38,6 @@ data "aws_iam_policy_document" "segment_data_lake_assume_role_policy_document" {
 
 # https://www.terraform.io/docs/providers/aws/d/caller_identity.html
 data "aws_caller_identity" "current" {}
-
-# https://www.terraform.io/docs/providers/aws/d/region.html
-data "aws_region" "current" {}
 
 resource "aws_iam_policy" "segment_data_lake_policy" {
   name        = "SegmentDataLakePolicy${var.suffix}"

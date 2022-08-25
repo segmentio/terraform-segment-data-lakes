@@ -88,14 +88,18 @@ resource "aws_s3_bucket" "segment_datalake_s3" {
 # Creates the IAM Policy that allows Segment to access the necessary resources
 # in your AWS account for loading your data.
 module "iam" {
-  source = "git@github.com:segmentio/terraform-segment-data-lake//aws_datalake/modules/iam?ref=v0.8.0"
+  source = "git@github.com:segmentio/terraform-segment-data-lakes//aws_datalake/modules/iam?ref=v0.8.0"
 
   # Suffix is not strictly required if only initializing this module once.
   # However, if you need to initialize multiple times across different Terraform
   # workspaces, this hook allows the generated IAM policies to be given unique
   # names.
   suffix = "-prod"
-
+  
+  # segment_region is an optional field which helps you to specify specify the region if you have configured Segment in a different region. See 
+  # https://segment.com/docs/guides/regional-segment/ for more details
+  # segment_region = "us-west-2"
+  
   s3_bucket    = aws_s3_bucket.segment_datalake_s3.id
   external_ids = values(local.external_ids)
 }
@@ -103,7 +107,7 @@ module "iam" {
 # Creates an EMR Cluster that Segment uses for performing the final ETL on your
 # data that lands in S3.
 module "emr" {
-  source = "git@github.com:segmentio/terraform-segment-data-lake//aws_datalake/modules/emr?ref=v0.8.0"
+  source = "git@github.com:segmentio/terraform-segment-data-lakes//aws_datalake/modules/emr?ref=v0.8.0"
 
   s3_bucket = aws_s3_bucket.segment_datalake_s3.id
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
@@ -120,7 +124,7 @@ module "emr" {
 # Add the names of glue databases to the glue_db_list variable in local.
 
 # module "lakeformation_datalake_permissions" {
-#   source = "git@github.com:segmentio/terraform-segment-data-lake//aws_datalake/modules/lakeformation?ref=v0.8.0"
+#   source = "git@github.com:segmentio/terraform-segment-data-lakes//aws_datalake/modules/lakeformation?ref=v0.8.0"
 #   for_each = local.glue_db_list
 #   name = each.key
 #   iam_roles = {
