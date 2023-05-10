@@ -9,19 +9,8 @@ variable "segment_aws_accounts" {
   type        = list(string)
 
   default = [
-    "arn:aws:iam::294048959147:role/datalakes-aws-worker",
-    "arn:aws:iam::294048959147:role/datalakes-customer-service",
-    "arn:aws:iam::294048959147:role/customer-datalakes-prod-admin",
+    "arn:aws:iam::595280932656:role/segment-datalakes-production-access",
   ]
-}
-
-variable "segment_eu_aws_accounts" {
-    description = "ARN of the EU AWS accounts used by Segment to connect to your Data Lake."
-    type        = list(string)
-  
-    default = [
-      "arn:aws:iam::595280932656:role/segment-datalakes-production-access",
-    ]
 }
 
 variable "segment_region" {
