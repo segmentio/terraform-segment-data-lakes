@@ -16,7 +16,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 
   service_role           = var.iam_emr_service_role
   autoscaling_role       = var.iam_emr_autoscaling_role
-	security_configuration = var.security_configuration
+  security_configuration = var.security_configuration
 
   master_instance_group {
     instance_type = var.master_instance_type
