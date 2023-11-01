@@ -26,13 +26,13 @@ data "aws_iam_policy_document" "segment_policy_doc" {
   }
 
   statement {
-    sid = "AllowSegmentUser"
+    sid    = "AllowSegmentUser"
     effect = "Allow"
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["arn:aws:iam::107630771604:user/s3-copy"]
     }
-    actions =  ["S3:PutObject"]
+    actions   = ["S3:PutObject"]
     resources = ["arn:aws:s3:::${var.s3_bucket}/*"]
   }
 
@@ -51,7 +51,7 @@ module "s3_bucket" {
 
   tags = local.tags
 
-  
-  policy = data.aws_iam_policy_document.segment_policy_doc.json
-  attach_policy =true
+
+  policy        = data.aws_iam_policy_document.segment_policy_doc.json
+  attach_policy = true
 }

@@ -8,9 +8,9 @@ locals {
   subnet_id  = "subnet-097e2dc4f7499f77a" # Subnet the EMR cluster will run in.
   arn_prefix = "arn:aws:iam::211459479356"
   default_tags = {
-    department = "data"
-    subteam    = "dataeng"
-    git = "https://github.com/slicelife/terraform-aws-data-lake/"
+    department  = "data"
+    subteam     = "dataeng"
+    git         = "https://github.com/slicelife/terraform-aws-data-lake/"
     environment = "development"
     terraformed = "yes"
   }
@@ -29,9 +29,9 @@ data "aws_secretsmanager_secret_version" "segment_secrets" {
 }
 
 module "s3_bucket" {
-  source    = "../modules/s3_bucket"
-  s3_bucket = local.s3_bucket_name
-  tags = local.default_tags
+  source       = "../modules/s3_bucket"
+  s3_bucket    = local.s3_bucket_name
+  tags         = local.default_tags
   data_account = 409386690817
 }
 
@@ -44,20 +44,20 @@ module "glue" {
 module "iam" {
   source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.3.0.zip//terraform-segment-data-lakes-0.3.0/modules/iam"
 
-  s3_bucket    = "${local.s3_bucket_name}"
-  external_ids = "${local.external_ids}"
-  tags = local.default_tags
+  s3_bucket    = local.s3_bucket_name
+  external_ids = local.external_ids
+  tags         = local.default_tags
 }
 
 module "emr" {
   source = "https://github.com/segmentio/terraform-aws-data-lake/archive/v0.3.0.zip//terraform-segment-data-lakes-0.3.0/modules/emr"
 
-  s3_bucket                = "${local.s3_bucket_name}"
-  subnet_id                = "${local.subnet_id}"
+  s3_bucket                = local.s3_bucket_name
+  subnet_id                = local.subnet_id
   iam_emr_autoscaling_role = "${local.arn_prefix}:role/${module.iam.iam_emr_autoscaling_role}"
   iam_emr_service_role     = "${local.arn_prefix}:role/${module.iam.iam_emr_service_role}"
   iam_emr_instance_profile = "${local.arn_prefix}:instance-profile/${module.iam.iam_emr_instance_profile}"
-  tags = local.default_tags
+  tags                     = local.default_tags
 }
 
 module "segment" {
