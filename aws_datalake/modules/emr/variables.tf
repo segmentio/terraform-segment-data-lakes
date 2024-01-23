@@ -95,6 +95,12 @@ variable "task_instance_max_count" {
   default     = "4"
 }
 
+variable "emr_cluster_version" {
+  description = "Version of emr cluster"
+  type        = string
+  default     = "6.5.0"
+}
+
 locals {
   tags = merge(tomap({"vendor" = "segment"}), var.tags)
 }

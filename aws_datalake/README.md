@@ -54,6 +54,7 @@ mkdir segment-datalakes-tf
       * **Note - Existing users** may be using the `sourceID` here instead of the `workspaceID`, which was the previous configuration. Setting this value as the `sourceID` is still supported for existing users for backwards compatibility. Follow instructions [here](#Using-workspaceID-as-the-externalID) to migrate to `workspaceID`. This will ensure you do not need to update this value for each source you want to add.
     * Update the `name` in the `aws_s3_bucket` resource to the desired name of your S3 bucket
     * Update the `subnet_id` in the `emr` module to the subnet in which to create the EMR cluster
+    * Update the `emr_cluster_version` in the `emr` module to the version that you want to use. We recommend using any 6.x or 7.x versions.
 
 ```hcl
 provider "aws" {
@@ -111,6 +112,7 @@ module "emr" {
 
   s3_bucket = aws_s3_bucket.segment_datalake_s3.id
   subnet_id = "subnet-XXX" # Replace this with the subnet ID you want the EMR cluster to run in.
+  emr_cluster_version = "7.0.0"
 
   # LEAVE THIS AS-IS
   iam_emr_autoscaling_role = module.iam.iam_emr_autoscaling_role
