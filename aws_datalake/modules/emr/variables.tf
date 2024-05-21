@@ -14,8 +14,20 @@ variable "master_security_group" {
   default     = ""
 }
 
+variable "additional_master_security_groups" {
+  description = "String containing a comma separated list of additional Amazon EC2 security group IDs for the master node."
+  type        = string
+  default     = ""
+}
+
 variable "slave_security_group" {
   description = "Identifier of the Amazon EC2 EMR-Managed security group for the slave nodes."
+  type        = string
+  default     = ""
+}
+
+variable "additional_slave_security_groups" {
+  description = "String containing a comma separated list of additional Amazon EC2 security group IDs for the slave nodes as a comma separated string."
   type        = string
   default     = ""
 }
@@ -52,6 +64,19 @@ variable "iam_emr_instance_profile" {
   description = "Name of the EMR EC2 instance profile"
   type        = string
 }
+
+variable "key_name" {
+  description = "Amazon EC2 key pair that can be used to ssh to the master node as the user called hadoop."
+  type        = string
+  default     = null
+}
+
+# FIXME requires aws provider v5
+#variable "unhealthy_node_replacement" {
+#  description = "Whether Amazon EMR should gracefully replace core nodes that have degraded within the cluster."
+#  type        = bool
+#  default     = false
+#}
 
 variable "master_instance_type" {
   description = "EC2 Instance Type for Master"
@@ -99,6 +124,24 @@ variable "emr_cluster_version" {
   description = "Version of emr cluster"
   type        = string
   default     = "6.5.0"
+}
+
+variable "additional_applications" {
+  description = "List of applications to install on the EMR cluster, besides Hadoop, Hive, and Spark."
+  type        = list(string)
+  default     = []
+}
+
+variable "ebs_size" {
+  description = "Volume size, in gibibytes (GiB)"
+  type        = string
+  default     = "64"
+}
+
+variable "ebs_type" {
+  description = "Volume type. Valid options are gp3, gp2, io1, standard, st1 and sc1."
+  type        = string
+  default     = "gp2"
 }
 
 locals {
