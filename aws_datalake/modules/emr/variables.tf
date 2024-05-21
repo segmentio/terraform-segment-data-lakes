@@ -20,6 +20,12 @@ variable "slave_security_group" {
   default     = ""
 }
 
+variable "security_configuration" {
+  description = "Name of the EMR security configuration for options like Encryption, IMDS, etc."
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "A map of tags to add to all resources. A vendor=segment tag will be added automatically (which is also used by the IAM policy to provide Segment access to submit jobs)."
   type        = map(string)
