@@ -3,27 +3,31 @@
 resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
   name          = var.cluster_name
   release_label = "emr-${var.emr_cluster_version}"
-  applications  = ["Hadoop", "Hive", "Spark"]
+  applications  = concat(["Hadoop", "Hive", "Spark"], var.additional_applications)
 
   log_uri = "s3://${var.s3_bucket}/${var.emr_logs_s3_prefix}"
 
   ec2_attributes {
     subnet_id                         = var.subnet_id
     emr_managed_master_security_group = var.master_security_group
+    additional_master_security_groups = var.additional_master_security_groups
     emr_managed_slave_security_group  = var.slave_security_group
+    additional_slave_security_groups  = var.additional_slave_security_groups
     instance_profile                  = var.iam_emr_instance_profile
+    key_name                          = var.key_name
   }
 
   service_role     = var.iam_emr_service_role
   autoscaling_role = var.iam_emr_autoscaling_role
+  #unhealthy_node_replacement = var.unhealthy_node_replacement
 
   master_instance_group {
     instance_type = var.master_instance_type
     name          = "master_group"
 
     ebs_config {
-      size                 = "64"
-      type                 = "gp2"
+      size                 = var.ebs_size
+      type                 = var.ebs_type
       volumes_per_instance = 1
     }
   }
@@ -34,8 +38,8 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
     name           = "core_group"
 
     ebs_config {
-      size                 = "64"
-      type                 = "gp2"
+      size                 = var.ebs_size
+      type                 = var.ebs_type
       volumes_per_instance = 1
     }
 
@@ -94,22 +98,7 @@ resource "aws_emr_cluster" "segment_data_lake_emr_cluster" {
 EOF
   }
 
-  configurations_json = <<EOF
-  [
-    {
-      "Classification": "hive-site",
-      "Properties": {
-        "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
-      }
-    },
-    {
-      "Classification": "spark-hive-site",
-      "Properties": {
-        "hive.metastore.client.factory.class":"com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"      }
-    }
-  ]
-EOF
-
+  configurations_json = var.configurations_json
   tags = local.tags
 }
 
@@ -121,8 +110,8 @@ resource "aws_emr_instance_group" "task" {
   instance_count = var.task_instance_count
 
   ebs_config {
-    size                 = "64"
-    type                 = "gp2"
+    size                 = var.ebs_size
+    type                 = var.ebs_type
     volumes_per_instance = 1
   }
 
