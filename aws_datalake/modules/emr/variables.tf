@@ -144,6 +144,35 @@ variable "ebs_type" {
   default     = "gp2"
 }
 
+variable "configurations_json" {
+  description = "JSON string for supplying list of configurations for the EMR cluster."
+  type        = string
+  default     = <<-EOF
+    [
+      {
+        "Classification": "hive-site",
+        "Properties": {
+          "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+        }
+      },
+      {
+        "Classification": "spark-hive-site",
+        "Properties": {
+          "hive.metastore.client.factory.class":"com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
+        }
+      },
+      {
+        "Classification": "spark-defaults",
+        "Properties": {
+          "spark.history.fs.cleaner.enabled": "true",
+          "spark.history.fs.cleaner.interval": "1d",
+          "spark.history.fs.cleaner.maxAge": "7d"
+        }
+      }
+    ]
+  EOF
+}
+
 locals {
   tags = merge(tomap({"vendor" = "segment"}), var.tags)
 }
