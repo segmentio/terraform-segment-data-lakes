@@ -58,6 +58,7 @@ data "aws_iam_policy_document" "segment_data_lake_policy_document" {
       "elasticmapreduce:DescribeStep",
       "elasticmapreduce:RunJobFlow",
       "elasticmapreduce:TerminateJobFlows",
+      "elasticmapreduce:AddTags"
     ]
 
     resources = [
