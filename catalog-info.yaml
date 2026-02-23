@@ -1,9 +1,10 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: System
 metadata:
   name: terraform-segment-data-lakes
   description: Terraform module for Segment Data Lakes
+  annotations:
+    github.com/project-slug: segmentio/terraform-segment-data-lakes
+    buildkite.com/project-slug: segmentio/terraform-segment-data-lakes
 spec:
-  type: library
-  lifecycle: production
   owner: group:default/sup-org-2930 # https://backstage.twilioinfra.com/catalog/default/group/sup-org-2930
