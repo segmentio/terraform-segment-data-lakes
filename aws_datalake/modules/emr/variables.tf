@@ -102,5 +102,5 @@ variable "emr_cluster_version" {
 }
 
 locals {
-  tags = merge(tomap({"vendor" = "segment"}), var.tags)
+  tags = merge(tomap({ "vendor" = "segment" }), var.tags)
 }

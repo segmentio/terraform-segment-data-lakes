@@ -27,10 +27,10 @@ module "iam" {
 module "emr" {
   source = "../../modules/emr"
 
-  s3_bucket    = "data_lake_tf_test_s3_bucket"
-  subnet_id    = "subnet-00f137e4f3a6f8356"
-  tags         = local.tags
-  cluster_name = "test-cluster"
+  s3_bucket           = "data_lake_tf_test_s3_bucket"
+  subnet_id           = "subnet-00f137e4f3a6f8356"
+  tags                = local.tags
+  cluster_name        = "test-cluster"
   emr_cluster_version = "7.0.0"
 
   # LEAVE THIS AS-IS

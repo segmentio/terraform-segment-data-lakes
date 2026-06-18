@@ -1,6 +1,6 @@
 resource "azurerm_storage_container" "segment_data_lake_storage_container" {
-  name                  = var.container_name
-  storage_account_name  = azurerm_storage_account.segment_data_lake_storage_account.name
+  name                 = var.container_name
+  storage_account_name = azurerm_storage_account.segment_data_lake_storage_account.name
 }
 
 resource "azurerm_storage_account" "segment_data_lake_storage_account" {

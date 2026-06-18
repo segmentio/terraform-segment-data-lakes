@@ -1,12 +1,12 @@
-steps:
-  - label: ":lint-roller: fmtcheck"
-    plugins:
-      - docker#v3.3.0:
-          image: hashicorp/terraform:0.12.31
-          command: ["fmt", "-recursive"]
+agents:
+  queue: general-039
 
-  - label: ":lint-roller: Lint"
+env:
+  ECR_REGISTRY: 018537234677.dkr.ecr.us-east-1.amazonaws.com
+
+steps:
+  - label: ":lint-roller: Linted"
     plugins:
-      - docker#v3.3.0:
-          image: wata727/tflint:0.12.1
-          commands: make lint
+      - docker#v5.12.0:
+          image: ${ECR_REGISTRY}/docker.io/hashicorp/terraform:1.15.5
+          command: ["fmt", "-check", "-recursive", "-diff"]

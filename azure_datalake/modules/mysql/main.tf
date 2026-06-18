@@ -16,9 +16,9 @@ resource "azurerm_mysql_server" "segment_mysql_server" {
   administrator_login          = var.db_admin
   administrator_login_password = var.password
 
-  sku_name   = "B_Gen5_1"  //tier+family+core
-  version    = "5.7"
-  storage_mb = 5120
-  ssl_enforcement_enabled  = true
+  sku_name                = "B_Gen5_1" //tier+family+core
+  version                 = "5.7"
+  storage_mb              = 5120
+  ssl_enforcement_enabled = true
 }
 
