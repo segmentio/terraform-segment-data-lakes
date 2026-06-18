@@ -13,9 +13,9 @@ resource "azuread_service_principal_password" "segment_sp_password" {
 }
 
 resource "azuread_service_principal" "segment_service_principal" {
-  application_id  = azuread_application.segment_service_application.application_id
+  application_id = azuread_application.segment_service_application.application_id
 }
 
 resource "azuread_application" "segment_service_application" {
-  display_name     = var.app_name
+  display_name = var.app_name
 }

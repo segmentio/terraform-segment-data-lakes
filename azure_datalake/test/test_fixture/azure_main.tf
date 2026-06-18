@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     databricks = {
-      source  = "databrickslabs/databricks"
+      source = "databrickslabs/databricks"
     }
 
     azurerm = "~> 2"
@@ -29,14 +29,14 @@ locals {
   db_password = ""
   db_admin    = ""
 
-  start_ip          = "0.0.0.0"
-  end_ip            = "255.255.255.255"
-  sku               = "premium"
+  start_ip               = "0.0.0.0"
+  end_ip                 = "255.255.255.255"
+  sku                    = "premium"
   service_principal_name = ""
 
   databricks_workspace_url = ""
-  cluster_name   = ""
-  tenant_id      = ""
+  cluster_name             = ""
+  tenant_id                = ""
 }
 
 resource "azurerm_resource_group" "segment_datalake" {
@@ -65,22 +65,22 @@ resource "azurerm_key_vault_access_policy" "segment_vault" {
 module "segment_data_lake_storage_account" {
   source = "./modules/storageaccount"
 
-  name           = local.storage_account
-  region         = local.region
+  name                = local.storage_account
+  region              = local.region
   resource_group_name = azurerm_resource_group.segment_datalake.name
-  container_name = local.container_name
+  container_name      = local.container_name
 }
 
 module "segment_data_lake_mysql" {
   source = "./modules/mysql"
 
 
-  region = local.region
-  server_name = local.server_name
+  region              = local.region
+  server_name         = local.server_name
   resource_group_name = azurerm_resource_group.segment_datalake.name
-  db_name     = local.db_name
-  db_admin    = local.db_admin
-  password   =  local.db_password
+  db_name             = local.db_name
+  db_admin            = local.db_admin
+  password            = local.db_password
 
 }
 
@@ -92,7 +92,7 @@ module "segment_data_lake_service_principal" {
 }
 
 module "segment_data_lake_databricks_cluster" {
-  source = "./modules/databricks"
+  source        = "./modules/databricks"
   workspace_url = local.databricks_workspace_url
 
   cluster_name             = local.cluster_name
